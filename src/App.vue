@@ -1,26 +1,30 @@
 <template>
-  <img alt="Vue logo" src="./assets/logo.png">
-  <HelloWorld msg="Welcome to Your Vue.js App"/>
+  <MyComputerHeader />
+  <MyComputerBody />
 </template>
 
 <script>
-import HelloWorld from './components/HelloWorld.vue'
+import MyComputerHeader from "./components/MyComputerHeader.vue";
+import MyComputerBody from "./page/MyComputerBody.vue";
 
 export default {
-  name: 'App',
+  name: "MyComputer",
   components: {
-    HelloWorld
-  }
-}
+    MyComputerHeader,
+    MyComputerBody,
+  },
+};
 </script>
 
 <style>
+* {
+  border: 1px solid red;
+}
+
+html,
+body,
 #app {
-  font-family: Avenir, Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
-  margin-top: 60px;
+  margin: 0;
+  height: 100%;
 }
 </style>
