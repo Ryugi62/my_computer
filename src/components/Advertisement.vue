@@ -1,6 +1,6 @@
 <template>
   <div class="advertisementBox">
-    <div class="advertisement">광고입니다.</div>
+    <div class="advertisement">광고</div>
   </div>
 </template>
 
@@ -12,6 +12,7 @@ export default {
 
 <style scoped>
 .advertisementBox {
+  border: 1px solid #000;
   background-color: #f0f0f0;
 }
 
