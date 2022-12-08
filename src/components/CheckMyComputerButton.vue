@@ -1,26 +1,39 @@
 <template>
   <div class="buttonBackground">
-    <div class="checkButton">내 PC 사양 확인하기</div>
+    <button
+      type="button"
+      class="checkButton btn btn-primary"
+      @click="goListPage"
+    >
+      내 PC 사양 확인하기
+    </button>
   </div>
 </template>
 
 <script>
-export default {};
+export default {
+  name: "CheckMyComputerButton",
+
+  methods: {
+    goListPage() {
+      this.$router.push("/gameList");
+    },
+  },
+};
 </script>
 
 <style scoped>
 .buttonBackground {
-  width: 100%;
   height: 100%;
   display: flex;
   background-color: #f0f0f0;
 }
 
 .checkButton {
-  width: 100%;
+  width: 80%;
   color: white;
   margin: auto;
-  height: 150px;
+  height: 100px;
   cursor: pointer;
   display: flex;
   align-items: center;
