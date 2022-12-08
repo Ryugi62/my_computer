@@ -3,6 +3,7 @@ import Home from "../views/Home.vue";
 import GameList from "../views/GameList.vue";
 import Admin from "../views/Admin.vue";
 import AdminLogin from "../views/AdminLogin.vue";
+import Notice from "../views/Notice.vue";
 
 const routes = [
   {
@@ -24,6 +25,11 @@ const routes = [
     path: "/adminLogin",
     name: "adminLogin",
     component: AdminLogin,
+  },
+  {
+    path: "/notice",
+    name: "notice",
+    component: Notice,
   },
   {
     path: "/:catchAll(.*)",

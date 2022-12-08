@@ -3,7 +3,7 @@
     <div class="title" @click="goHome">내 컴퓨터.com</div>
     <div class="navBarBox">
       <div class="navBar">
-        <span class="navBarIcon">공지사항</span>
+        <span class="navBarIcon" @click="goNotice">공지사항</span>
         <span class="navBarIcon">제작자 블로그</span>
         <span class="navBarIcon">제작자에게 문의</span>
       </div>
@@ -16,6 +16,9 @@ export default {
   methods: {
     goHome() {
       this.$router.push("/");
+    },
+    goNotice() {
+      this.$router.push("/notice");
     },
   },
 };
