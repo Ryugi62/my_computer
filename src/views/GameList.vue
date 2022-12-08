@@ -14,12 +14,10 @@
           </tr>
         </thead>
         <tbody>
-          <tr v-for="idx1 in gameInformationArr.length" :key="idx1 - 1">
-            <td
-              v-for="(gameInformation, idx2) of gameInformationArr[idx1 - 1]"
-              :key="idx2"
-            >
-              <i v-if="idx1 - 1" class="fa-solid fa-check okCheck"></i>
+          <tr v-for="(gameInformation, idx1) in gameInformationArr" :key="idx1">
+            <td v-for="(info, idx2) in gameInformation" :key="idx2">
+              <span v-if="idx2 === 'game'">{{ info }}</span>
+              <i v-else-if="idx2" class="fa-solid fa-check okCheck"></i>
               <i v-else class="fa-solid fa-x notCheck"></i>
             </td>
           </tr>
@@ -60,7 +58,7 @@ export default {
           driveCapacity: "500GB", //
         },
         {
-          game: "리그오브레전드",
+          game: "배틀그라운드",
           os: "Windows 10",
           cpu: "Inter 9th Gen",
           ram: "16GB",
@@ -70,7 +68,7 @@ export default {
           driveCapacity: "500GB", //
         },
         {
-          game: "리그오브레전드",
+          game: "크레이지아케이드",
           os: "Windows 10",
           cpu: "Inter 9th Gen",
           ram: "16GB",
@@ -80,7 +78,7 @@ export default {
           driveCapacity: "500GB", //
         },
         {
-          game: "리그오브레전드",
+          game: "카트라이더",
           os: "Windows 10",
           cpu: "Inter 9th Gen",
           ram: "16GB",
