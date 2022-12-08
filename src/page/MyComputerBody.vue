@@ -32,17 +32,17 @@ export default {
 }
 
 .bodyLeft {
-  width: 200px;
+  width: 250px;
   height: 100%;
 }
 
 .bodyCenter {
-  width: calc(100% - 400px);
+  width: calc(100% - 500px);
   height: 100%;
 }
 
 .bodyRight {
-  width: 200px;
+  width: 250px;
   height: 100%;
 }
 </style>

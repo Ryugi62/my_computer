@@ -1,27 +1,32 @@
 <template>
   <div class="gameListBackground">
-    <table class="table">
-      <thead>
-        <tr>
-          <th v-for="(theadTitle, idx) of theadTitleArr" scope="col" :key="idx">
-            {{ theadTitle }}
-          </th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr v-for="(inf, idx) of gameInformationArr" :key="inf + idx">
-          <th scope="row">{{ inf.game }}</th>
-          <td>{{ inf.os }}</td>
-          <td>{{ inf.cpu }}</td>
-          <td>{{ inf.ram }}</td>
-          <td>{{ inf.grapichCard }}</td>
-          <td>{{ inf.mainboardManufacturer }}</td>
-          <td>{{ inf.driveCapacity }}</td>
-        </tr>
-      </tbody>
-    </table>
+    <div class="tableBox">
+      <table class="table">
+        <thead>
+          <tr>
+            <th
+              scope="col"
+              v-for="(theadTitle, idx) of theadTitleArr"
+              :key="idx"
+            >
+              {{ theadTitle }}
+            </th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr v-for="idx1 in gameInformationArr.length" :key="idx1 - 1">
+            <td
+              v-for="(gameInformation, idx2) of gameInformationArr[idx1 - 1]"
+              :key="idx2"
+            >
+              <i v-if="idx1 - 1" class="fa-solid fa-check okCheck"></i>
+              <i v-else class="fa-solid fa-x notCheck"></i>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
     <div class="shareButtonBox">
-      <!-- share button -->
       <button type="button" class="shareButton btn btn-primary">
         내 PC 사양 공유하기
       </button>
@@ -33,10 +38,8 @@
 export default {
   data() {
     return {
-      // 게임 정보가 운영체제, CPU, RAM, GRAPHIC CARD, 바이오스 버전, 메인보드 제조사, 드라이브 용량 저장 to array
-
-      // 게임 정보를 테이블로 출력
       theadTitleArr: [
+        "게임",
         "운영체제",
         "CPU",
         "RAM",
@@ -52,6 +55,37 @@ export default {
           cpu: "Inter 9th Gen",
           ram: "16GB",
           grapichCard: "GTX 1660",
+          biosVersion: "1.0.0",
+          mainboardManufacturer: "MSI", // Mainboard manufacturer
+          driveCapacity: "500GB", //
+        },
+        {
+          game: "리그오브레전드",
+          os: "Windows 10",
+          cpu: "Inter 9th Gen",
+          ram: "16GB",
+          grapichCard: "GTX 1660",
+          biosVersion: "1.0.0",
+          mainboardManufacturer: "MSI", // Mainboard manufacturer
+          driveCapacity: "500GB", //
+        },
+        {
+          game: "리그오브레전드",
+          os: "Windows 10",
+          cpu: "Inter 9th Gen",
+          ram: "16GB",
+          grapichCard: "GTX 1660",
+          biosVersion: "1.0.0",
+          mainboardManufacturer: "MSI", // Mainboard manufacturer
+          driveCapacity: "500GB", //
+        },
+        {
+          game: "리그오브레전드",
+          os: "Windows 10",
+          cpu: "Inter 9th Gen",
+          ram: "16GB",
+          grapichCard: "GTX 1660",
+          biosVersion: "1.0.0",
           mainboardManufacturer: "MSI", // Mainboard manufacturer
           driveCapacity: "500GB", //
         },
@@ -65,12 +99,26 @@ export default {
 .gameListBackground {
   width: 100%;
   height: 100%;
+  border-left: 1px solid #dee2e6;
+  border-right: 1px solid #dee2e6;
+}
+
+.tableBox {
+  width: 100%;
+  height: 90%;
 }
 
 .table {
-  width: 100%;
   margin: 0;
-  height: 90%;
+  text-align: center;
+}
+
+.okCheck {
+  color: green;
+}
+
+.notCheck {
+  color: red;
 }
 
 .shareButtonBox {

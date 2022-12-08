@@ -1,6 +1,6 @@
 <template>
   <div class="advertisementBox">
-    <div class="advertisement">이것은 광고입니다.</div>
+    <div class="advertisement">광고입니다.</div>
   </div>
 </template>
 
@@ -16,5 +16,7 @@ export default {
 }
 
 .advertisement {
+  width: 250px;
+  height: 250px;
 }
 </style>
