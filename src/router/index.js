@@ -1,6 +1,8 @@
 import { createRouter, createWebHistory } from "vue-router";
 import Home from "../views/Home.vue";
 import GameList from "../views/GameList.vue";
+import Admin from "../views/Admin.vue";
+import AdminLogin from "../views/AdminLogin.vue";
 
 const routes = [
   {
@@ -12,6 +14,16 @@ const routes = [
     path: "/gameList",
     name: "gameList",
     component: GameList,
+  },
+  {
+    path: "/admin",
+    name: "admin",
+    component: Admin,
+  },
+  {
+    path: "/adminLogin",
+    name: "adminLogin",
+    component: AdminLogin,
   },
   {
     path: "/:catchAll(.*)",
