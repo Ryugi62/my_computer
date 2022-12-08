@@ -3,11 +3,9 @@
     <div class="title">내 컴퓨터.com</div>
     <div class="navBarBox">
       <div class="navBar">
-        <div class="navBarIcon"></div>
-        <div class="navBarIcon"></div>
-        <div class="navBarIcon"></div>
-        <div class="navBarIcon"></div>
-        <div class="navBarIcon"></div>
+        <span class="navBarIcon">공지사항</span>
+        <span class="navBarIcon">제작자 블로그</span>
+        <span class="navBarIcon">제작자에게 문의</span>
       </div>
     </div>
   </div>
@@ -23,16 +21,31 @@ export default {};
   width: 100%;
   height: 50px;
   display: flex;
-  background-color: #333030;
+  background-color: #1f3964;
 }
 
 .title {
-  padding: 0 10px;
+  padding: 0 15px;
   font-size: 20px;
   align-self: center;
 }
 
 .navBarBox {
+  min-width: 25%;
+  display: flex;
   margin-left: auto;
+}
+
+.navBar {
+  margin: auto;
+  width: 100%;
+  display: flex;
+  align-items: center;
+}
+
+.navBarIcon {
+  margin: auto;
+  cursor: pointer;
+  padding: 0 20px;
 }
 </style>
