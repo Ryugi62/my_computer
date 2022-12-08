@@ -1,6 +1,6 @@
 <template>
   <div class="headerBackground">
-    <div class="title">내 컴퓨터.com</div>
+    <div class="title" @click="goHome">내 컴퓨터.com</div>
     <div class="navBarBox">
       <div class="navBar">
         <span class="navBarIcon">공지사항</span>
@@ -12,7 +12,13 @@
 </template>
 
 <script>
-export default {};
+export default {
+  methods: {
+    goHome() {
+      this.$router.push("/");
+    },
+  },
+};
 </script>
 
 <style scoped>
@@ -25,6 +31,7 @@ export default {};
 }
 
 .title {
+  cursor: pointer;
   padding: 0 15px;
   font-size: 20px;
   align-self: center;
