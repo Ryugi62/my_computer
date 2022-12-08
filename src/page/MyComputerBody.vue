@@ -39,6 +39,7 @@ export default {
 .bodyCenter {
   width: calc(100% - 500px);
   height: 100%;
+  overflow: scroll;
 }
 
 .bodyRight {
