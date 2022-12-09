@@ -17,6 +17,14 @@ export default {
 </script>
 
 <style>
+@font-face {
+  font-family: "BMJUA";
+  src: url("https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_one@1.0/BMJUA.woff")
+    format("woff");
+  font-weight: normal;
+  font-style: normal;
+}
+
 * {
   /* border: 1px solid red; */
 }
@@ -24,6 +32,7 @@ export default {
 html,
 body,
 #app {
+  font-family: BMJUA;
   margin: 0;
   height: 100%;
 }
