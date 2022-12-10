@@ -30,7 +30,8 @@ export default {
 }
 
 .checkButton {
-  width: 80%;
+  width: 50%;
+  max-width: 455px;
   color: white;
   margin: auto;
   height: 100px;
