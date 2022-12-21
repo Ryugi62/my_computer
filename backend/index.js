@@ -6,8 +6,8 @@ const history = require("connect-history-api-fallback");
 const app = express();
 const cors = require("cors");
 
-const port = process.env.PORT;
-// const port = 3000;
+// const port = process.env.PORT;
+const port = 3000;
 
 app.use(cors());
 app.use(history());
@@ -27,13 +27,9 @@ app.use((req, res, next) => {
   next();
 });
 
-app.post("/api/information", (req, res) => {
-  console.log("/api/information");
-
-  res.cookie("name", "express");
-
-  // send response
-  res.send("success");
+app.get("/api/getProgram", (req, res) => {
+  // send zip file to client
+  res.download(__dirname + "/my_computer.zip");
 });
 
 app.get("/test", (req, res) => {
