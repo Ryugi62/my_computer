@@ -1,35 +1,26 @@
 <template>
   <div class="gameListBackground">
-    <div class="myPerformanceBox">
-      <div class="myPerformanceTitle">내 PC 사양</div>
-      <div class="myPerformanceContent">
-        <div class="myPerformanceContentTitle">운영체제 : {{ os }}</div>
-      </div>
-      <div class="myPerformanceContent">
-        <div class="myPerformanceContentTitle">CPU : {{ cpu }}</div>
-      </div>
-      <div class="myPerformanceContent">
-        <div class="myPerformanceContentTitle">RAM : {{ ram }}</div>
-      </div>
-      <div class="myPerformanceContent">
-        <div class="myPerformanceContentTitle">
-          그래픽카드 : {{ graphic_card }}
-        </div>
-      </div>
-      <div class="myPerformanceContent">
-        <div class="myPerformanceContentTitle">바이오스 버전 : {{ bios }}</div>
-      </div>
-      <div class="myPerformanceContent">
-        <div class="myPerformanceContentTitle">
-          메인보드 제조사 : {{ mainboard_manufacturer }}
-        </div>
-      </div>
-      <div class="myPerformanceContent">
-        <div class="myPerformanceContentTitle">
-          드라이브 용량 : {{ drive_capacity }}
-        </div>
-      </div>
-    </div>
+    <table class="table">
+      <thead>
+        <tr>
+          <th
+            scope="col"
+            v-for="(theadTitle, idx) of computerInformation"
+            :key="idx"
+          >
+            {{ idx }}
+          </th>
+        </tr>
+      </thead>
+      <tbody>
+        <td v-for="(info, idx2) in computerInformation" :key="idx2">
+          {{ info }}
+        </td>
+      </tbody>
+    </table>
+
+    <p />
+
     <div class="tableBox">
       <table class="table">
         <thead>
@@ -68,13 +59,15 @@ import axios from "axios";
 export default {
   data() {
     return {
-      bios: "",
-      cpu: "",
-      drive_capacity: "",
-      graphic_card: "",
-      mainboard_manufacturer: "",
-      os: "",
-      ram: "",
+      computerInformation: {
+        bios: "없어요",
+        cpu: "없어요",
+        drive_capacity: "없어요",
+        graphic_card: "없어요",
+        mainboard_manufacturer: "없어요",
+        os: "없어요",
+        ram: "없어요",
+      },
 
       theadTitleArr: [
         "게임",
@@ -158,21 +151,36 @@ export default {
         cookieObj.os === "" ||
         cookieObj.ram === ""
       ) {
+        console.log("쿠키가 없어서 서버에서 정보를 가져옵니다.");
         this.getComputerInfo();
       } else {
-        this.bios = cookieObj.bios;
-        this.cpu = cookieObj.cpu;
-        this.drive_capacity = cookieObj.drive_capacity;
-        this.graphic_card = cookieObj.graphic_card;
-        this.mainboard_manufacturer = cookieObj.mainboard_manufacturer;
-        this.os = cookieObj.os;
-        this.ram = cookieObj.ram;
+        this.setComputerInfo(cookieObj);
       }
+    },
+
+    setComputerInfo(data) {
+      const {
+        bios,
+        cpu,
+        drive_capacity,
+        graphic_card,
+        mainboard_manufacturer,
+        os,
+        ram,
+      } = data;
+
+      this.computerInformation.bios = bios;
+      this.computerInformation.cpu = cpu;
+      this.computerInformation.drive_capacity = drive_capacity;
+      this.computerInformation.graphic_card = graphic_card;
+      this.computerInformation.mainboard_manufacturer = mainboard_manufacturer;
+      this.computerInformation.os = os;
+      this.computerInformation.ram = ram;
     },
 
     getComputerInfo() {
       axios
-        .post("http://127.0.0.1:10000/get_info", {
+        .post("http://127.0.0.1:5000/get_info", {
           headers: {
             "Access-Control-Allow-Origin": "*",
             "Access-Control-Allow-Methods": "GET,PUT,POST,DELETE,PATCH,OPTIONS",
@@ -189,13 +197,7 @@ export default {
           document.cookie = `os=${response.data.os}`;
           document.cookie = `ram=${response.data.ram}`;
 
-          this.bios = response.data.bios;
-          this.cpu = response.data.cpu;
-          this.drive_capacity = response.data.drive_capacity;
-          this.graphic_card = response.data.graphic_card;
-          this.mainboard_manufacturer = response.data.mainboard_manufacturer;
-          this.os = response.data.os;
-          this.ram = response.data.ram;
+          this.setComputerInfo(response.data);
         })
         .catch((err) => {
           console.log(err);
