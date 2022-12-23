@@ -27,7 +27,7 @@ app.use((req, res, next) => {
   next();
 });
 
-app.get("/api/getProgram", (req, res) => {
+app.post("/api/getProgram", (req, res) => {
   // send zip file to client
   res.download(__dirname + "/my_computer.zip");
 });

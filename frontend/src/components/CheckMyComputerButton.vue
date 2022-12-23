@@ -49,18 +49,20 @@ export default {
         os === "" ||
         ram === ""
       ) {
-        axios({
-          url: "http://localhost:3000/api/getProgram",
-          method: "GET",
-          responseType: "blob",
-        }).then((response) => {
-          const url = window.URL.createObjectURL(new Blob([response.data]));
-          const link = document.createElement("a");
-          link.href = url;
-          link.setAttribute("download", "download.zip");
-          document.body.appendChild(link);
-          link.click();
-        });
+        axios
+          .post("/api/getProgram", {
+            headers: {
+              "Content-Type": "application/json",
+            },
+          })
+          .then((response) => {
+            const url = window.URL.createObjectURL(new Blob([response.data]));
+            const link = document.createElement("a");
+            link.href = url;
+            link.setAttribute("download", "download.zip");
+            document.body.appendChild(link);
+            link.click();
+          });
       } else {
         this.$router.push("/gameList");
       }
