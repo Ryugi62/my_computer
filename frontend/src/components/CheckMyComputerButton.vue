@@ -41,6 +41,18 @@ export default {
   background-color: #f0f0f0;
 }
 
+.downloadButton {
+  width: 50%;
+  max-width: 455px;
+  color: #4472c4;
+  margin: auto auto 0 auto;
+  height: 100px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
 .checkButton {
   width: 50%;
   max-width: 455px;

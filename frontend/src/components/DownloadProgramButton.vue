@@ -1,6 +1,6 @@
 <template>
   <div class="downloadButton" @click="downloadProgram()">
-    PC사양 확인 프로그램 저장하기
+    PC사양 확인 프로그램 다운로드
   </div>
 </template>
 

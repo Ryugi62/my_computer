@@ -5,7 +5,7 @@
       <router-view />
     </div>
     <div class="bodyRight">
-      <advertisement style="width: 300px; height: 300px" />
+      <advertisement style="width: 300px; height: 250px" />
     </div>
   </div>
 </template>
@@ -34,13 +34,13 @@ export default {
 }
 
 .bodyCenter {
-  width: calc(100% - 500px);
+  width: calc(100% - 550px);
   height: 100%;
   overflow: scroll;
 }
 
 .bodyRight {
-  width: 250px;
+  width: 300px;
   height: 100%;
 }
 </style>
