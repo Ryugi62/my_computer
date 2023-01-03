@@ -4,8 +4,7 @@
     <div class="navBarBox">
       <div class="navBar">
         <span class="navBarIcon" @click="goNotice">공지사항</span>
-        <span class="navBarIcon">제작자 블로그</span>
-        <span class="navBarIcon">제작자에게 문의</span>
+        <span class="navBarIcon" @click="goInquiry">제작자에게 문의</span>
       </div>
     </div>
   </div>
@@ -19,6 +18,10 @@ export default {
     },
     goNotice() {
       this.$router.push("/notice");
+    },
+    goInquiry() {
+      // path =https://www.facebook.com/profile.php?id=100088261527037
+      window.open("https://www.facebook.com/profile.php?id=100088261527037");
     },
   },
 };
