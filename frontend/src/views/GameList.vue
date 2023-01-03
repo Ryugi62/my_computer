@@ -1,26 +1,5 @@
 <template>
   <div class="gameListBackground">
-    <table class="table">
-      <thead>
-        <tr>
-          <th
-            scope="col"
-            v-for="(theadTitle, idx) of computerInformation"
-            :key="idx"
-          >
-            {{ idx }}
-          </th>
-        </tr>
-      </thead>
-      <tbody>
-        <td v-for="(info, idx2) in computerInformation" :key="idx2">
-          {{ info }}
-        </td>
-      </tbody>
-    </table>
-
-    <p />
-
     <div class="tableBox">
       <table class="table">
         <thead>
@@ -60,13 +39,13 @@ export default {
   data() {
     return {
       computerInformation: {
-        bios: "없어요",
-        cpu: "없어요",
-        drive_capacity: "없어요",
-        graphic_card: "없어요",
-        mainboard_manufacturer: "없어요",
-        os: "없어요",
-        ram: "없어요",
+        bios: "X",
+        cpu: "X",
+        drive_capacity: "X",
+        graphic_card: "X",
+        mainboard_manufacturer: "X",
+        os: "X",
+        ram: "X",
       },
 
       theadTitleArr: [
@@ -79,6 +58,7 @@ export default {
         "메인보드 제조사",
         "드라이브 용량",
       ],
+
       gameInformationArr: [
         {
           game: "리그오브레전드",
@@ -125,7 +105,7 @@ export default {
   },
 
   mounted() {
-    this.setComputerData();
+    this.getMyIP();
   },
 
   methods: {
@@ -152,7 +132,7 @@ export default {
         cookieObj.ram === ""
       ) {
         console.log("쿠키가 없어서 서버에서 정보를 가져옵니다.");
-        this.getComputerInfo();
+        this.getComputerInfo(this.getMyIP);
       } else {
         this.setComputerInfo(cookieObj);
       }
@@ -178,30 +158,43 @@ export default {
       this.computerInformation.ram = ram;
     },
 
-    getComputerInfo() {
+    getMyIP() {
+      let ip = "";
       axios
-        .post("http://127.0.0.1:5000/get_info", {
+        .get("https://api.ipify.org?format=json")
+        .then((response) => {
+          ip = response.data.ip;
+          this.getComputerInfo(ip);
+        })
+        .catch((error) => {
+          console.log(error);
+        });
+      return ip;
+    },
+
+    getComputerInfo(ip) {
+      axios
+        .post("/api/getHardware", {
           headers: {
-            "Access-Control-Allow-Origin": "*",
-            "Access-Control-Allow-Methods": "GET,PUT,POST,DELETE,PATCH,OPTIONS",
+            "Content-Type": "application/json",
+          },
+          json: {
+            ip: ip,
           },
         })
         .then((response) => {
-          console.log(response.data);
-          // set cookie
-          document.cookie = `bios=${response.data.bios}`;
-          document.cookie = `cpu=${response.data.cpu}`;
-          document.cookie = `drive_capacity=${response.data.drive_capacity}`;
-          document.cookie = `graphic_card=${response.data.graphic_card}`;
-          document.cookie = `mainboard_manufacturer=${response.data.mainboard_manufacturer}`;
-          document.cookie = `os=${response.data.os}`;
-          document.cookie = `ram=${response.data.ram}`;
+          document.cookie = `bios=${response.data[0].bios}`;
+          document.cookie = `cpu=${response.data[0].cpu}`;
+          document.cookie = `drive_capacity=${response.data[0].drive_capacity}`;
+          document.cookie = `graphic_card=${response.data[0].graphic_card}`;
+          document.cookie = `mainboard_manufacturer=${response.data[0].mainboard_manufacturer}`;
+          document.cookie = `os=${response.data[0].os}`;
+          document.cookie = `ram=${response.data[0].ram}`;
 
-          this.setComputerInfo(response.data);
+          this.setComputerInfo(response.data[0]);
         })
         .catch((err) => {
           console.log(err);
-          this.$router.push("/home");
         });
     },
   },
