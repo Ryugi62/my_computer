@@ -43,12 +43,12 @@ export default {
 
 .downloadButton {
   width: 50%;
-  max-width: 455px;
   color: #4472c4;
-  margin: auto auto 0 auto;
   height: 100px;
   cursor: pointer;
+  margin: 0 auto auto auto;
   display: flex;
+  max-width: 455px;
   align-items: center;
   justify-content: center;
 }
