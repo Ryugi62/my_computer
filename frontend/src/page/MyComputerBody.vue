@@ -1,14 +1,11 @@
 <template>
   <div class="bodyBackground">
-    <div class="bodyLeft">
-      <advertisement />
-      <advertisement />
-    </div>
+    <div class="bodyLeft"></div>
     <div class="bodyCenter">
       <router-view />
     </div>
     <div class="bodyRight">
-      <advertisement />
+      <advertisement style="width: 300px; height: 300px" />
     </div>
   </div>
 </template>

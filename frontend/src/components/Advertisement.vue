@@ -1,6 +1,12 @@
 <template>
   <div class="advertisementBox">
-    <div class="advertisement">광고</div>
+    <ins
+      class="kakao_ad_area advertisement"
+      style="display: none"
+      data-ad-unit="DAN-6U9FgS8SxjRyM0qS"
+      data-ad-width="300"
+      data-ad-height="250"
+    ></ins>
   </div>
 </template>
 
@@ -12,12 +18,16 @@ export default {
 
 <style scoped>
 .advertisementBox {
-  border: 1px solid #000;
-  background-color: #f0f0f0;
+  border: 1px solid black;
+  display: flex;
+  overflow: hidden;
 }
 
 .advertisement {
-  width: 250px;
-  height: 250px;
+  margin: auto;
+}
+
+.advertisement * {
+  object-fit: contain;
 }
 </style>
