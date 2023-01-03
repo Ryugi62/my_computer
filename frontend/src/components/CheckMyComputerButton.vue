@@ -8,64 +8,24 @@
       내 PC 사양 확인하기 <br />
       (버튼을 눌러 프로그램을 설치 후 실행해주세요.)
     </button>
+
+    <DownloadButton />
   </div>
 </template>
 
 <script>
-import axios from "axios";
+import DownloadButton from "@/components/DownloadProgramButton.vue";
 
 export default {
   name: "CheckMyComputerButton",
 
+  components: {
+    DownloadButton,
+  },
+
   methods: {
-    getCookie() {
-      let cookieArr = document.cookie.split("; ");
-      let cookieObj = {};
-      cookieArr.forEach((cookie) => {
-        let cookieSplit = cookie.split("=");
-        cookieObj[cookieSplit[0]] = cookieSplit[1];
-      });
-
-      return cookieObj;
-    },
-
     goListPage() {
-      const {
-        bios,
-        cpu,
-        drive_capacity,
-        graphic_card,
-        mainboard_manufacturer,
-        os,
-        ram,
-      } = this.getCookie();
-
-      if (
-        bios === "" ||
-        cpu === "" ||
-        drive_capacity === "" ||
-        graphic_card === undefined ||
-        mainboard_manufacturer === "" ||
-        os === "" ||
-        ram === ""
-      ) {
-        axios
-          .post("/api/getProgram", {
-            headers: {
-              "Content-Type": "application/json",
-            },
-          })
-          .then((response) => {
-            const url = window.URL.createObjectURL(new Blob([response.data]));
-            const link = document.createElement("a");
-            link.href = url;
-            link.setAttribute("download", "download.zip");
-            document.body.appendChild(link);
-            link.click();
-          });
-      } else {
-        this.$router.push("/gameList");
-      }
+      this.$router.push("/myHardware");
     },
   },
 };
@@ -73,8 +33,11 @@ export default {
 
 <style scoped>
 .buttonBackground {
+  width: 100%;
+  color: #4472c4;
   height: 100%;
   display: flex;
+  flex-direction: column;
   background-color: #f0f0f0;
 }
 
@@ -82,7 +45,7 @@ export default {
   width: 50%;
   max-width: 455px;
   color: white;
-  margin: auto;
+  margin: auto auto 0 auto;
   height: 100px;
   cursor: pointer;
   display: flex;
