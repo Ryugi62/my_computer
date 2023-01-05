@@ -9,7 +9,7 @@
               v-for="(theadTitle, idx) of computerInformation"
               :key="idx"
             >
-              {{ idx }}
+              {{ computerParts[idx] }}
             </th>
           </tr>
         </thead>
@@ -48,13 +48,19 @@ export default {
   data() {
     return {
       computerInformation: {
-        bios: "X",
         cpu: "X",
         drive_capacity: "X",
         graphic_card: "X",
-        mainboard_manufacturer: "X",
         os: "X",
         ram: "X",
+      },
+
+      computerParts: {
+        cpu: "CPU (시피유)",
+        drive_capacity: "Drive (하드용량)",
+        graphic_card: "VGA (그래픽카드)",
+        os: "OS (윈도우 버전)",
+        ram: "Ram (메모리)",
       },
     };
   },
@@ -82,11 +88,9 @@ export default {
     setComputerData() {
       let cookieObj = this.getCookie();
       if (
-        cookieObj.bios === "" ||
         cookieObj.cpu === "" ||
         cookieObj.drive_capacity === "" ||
         cookieObj.graphic_card === undefined ||
-        cookieObj.mainboard_manufacturer === "" ||
         cookieObj.os === "" ||
         cookieObj.ram === ""
       ) {
@@ -98,21 +102,11 @@ export default {
     },
 
     setComputerInfo(data) {
-      const {
-        bios,
-        cpu,
-        drive_capacity,
-        graphic_card,
-        mainboard_manufacturer,
-        os,
-        ram,
-      } = data;
+      const { cpu, drive_capacity, graphic_card, os, ram } = data;
 
-      this.computerInformation.bios = bios;
       this.computerInformation.cpu = cpu;
       this.computerInformation.drive_capacity = drive_capacity;
       this.computerInformation.graphic_card = graphic_card;
-      this.computerInformation.mainboard_manufacturer = mainboard_manufacturer;
       this.computerInformation.os = os;
       this.computerInformation.ram = ram;
     },
@@ -142,11 +136,9 @@ export default {
           },
         })
         .then((response) => {
-          document.cookie = `bios=${response.data[0].bios}`;
           document.cookie = `cpu=${response.data[0].cpu}`;
           document.cookie = `drive_capacity=${response.data[0].drive_capacity}`;
           document.cookie = `graphic_card=${response.data[0].graphic_card}`;
-          document.cookie = `mainboard_manufacturer=${response.data[0].mainboard_manufacturer}`;
           document.cookie = `os=${response.data[0].os}`;
           document.cookie = `ram=${response.data[0].ram}`;
 
