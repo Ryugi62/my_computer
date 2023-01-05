@@ -20,6 +20,9 @@ def createGUI():
     button.bind("<Button-1>", lambda e: clicked_button())
     button.place(x=105, y=90)
 
+    # can't resize window
+    root.resizable(False, False)
+
 
 def clicked_button():
     os, cpu, ram, graphic_card, bios, mainboard_manufacturer, drive_capacity = getHardwareInfo()
@@ -29,7 +32,7 @@ def clicked_button():
     sendHardwareInfo(ip, os, cpu, ram, graphic_card, bios,
                      mainboard_manufacturer, drive_capacity)
 
-    webbrowser.open("http://localhost:3000/myHardware")
+    webbrowser.open("http://xn--220br78cbrb12f.com/myHardware")
 
     # stop tk.mainloop() and close window
     tk._exit()
@@ -68,13 +71,13 @@ def mac():
     return os, cpu, ram, graphic_card, bios_version, drive_capacity
 
 
-# in windows
 def windows():
     # get os
     os = platform.platform()
 
-    # get cpu
-    cpu = platform.processor()
+    # get cpu window
+    cpu = subprocess.check_output(
+        "wmic cpu get name", shell=True).decode("utf-8").split("\n")[1].strip()  # wmic cpu get name
 
     # get ram
     ram = str(round(psutil.virtual_memory().total / (1024.0 ** 3)))+" GB"
@@ -116,7 +119,7 @@ def getHardwareInfo():
 
 
 def sendHardwareInfo(ip, os, cpu, ram, graphic_card, bios, mainboard_manufacturer, drive_capacity):
-    url = "http://localhost:3000/api/setHardware"
+    url = "http://xn--220br78cbrb12f.com/api/setHardware"
 
     data = {
         "ip": ip,
