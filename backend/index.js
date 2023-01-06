@@ -6,7 +6,6 @@ const history = require("connect-history-api-fallback");
 const app = express();
 const cors = require("cors");
 const mysql = require("mysql");
-const AdmZip = require("adm-zip");
 
 // const port = process.env.PORT;
 const port = 3000;
@@ -25,6 +24,13 @@ console.log("mysql connected");
 // make table
 connection.query(
   "CREATE TABLE IF NOT EXISTS hardware (ip varchar(30) not null, os varchar(30) not null, cpu varchar(30) not null, ram varchar(30) not null, graphic_card varchar(30) not null, bios varchar(30) not null, mainboard_manufacturer varchar(30) not null, drive_capacity varchar(30) not null) ENGINE=MYISAM CHARSET=utf8;",
+  (err) => {
+    if (err) throw err;
+  }
+);
+
+connection.query(
+  "CREATE TABLE IF NOT EXISTS admin (id varchar(30) not null, password varchar(30) not null) ENGINE=MYISAM CHARSET=utf8;",
   (err) => {
     if (err) throw err;
   }
@@ -94,14 +100,27 @@ app.post("/api/setHardware", (req, res) => {
   );
 });
 
-app.get("/test", (req, res) => {
-  const { name } = req.cookies;
+app.post("/api/login", (req, res) => {
+  //  get id and password
+  const { id, password } = req.body.json;
 
-  console.log(name);
-
-  res.cookie("name", "express");
-
-  res.send("Cookie set");
+  // connect to mysql and check id and password
+  connection.query(
+    "SELECT * FROM admin WHERE id = ? AND password = ?",
+    [id, password],
+    (err, result) => {
+      if (err) {
+        console.log(err);
+      } else {
+        if (result.length > 0) {
+          // response.data.result = "success";
+          res.send("success");
+        } else {
+          res.send(result);
+        }
+      }
+    }
+  );
 });
 
 // start server
