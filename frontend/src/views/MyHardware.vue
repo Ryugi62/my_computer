@@ -25,7 +25,9 @@
 
     <div class="hardwareButtonBox">
       <div class="mb1">
-        <button class="btn btn-primary shareButton">내 PC사양 공유하기</button>
+        <button class="btn btn-primary shareButton" @click="clickedShareButton">
+          내 PC사양 공유하기
+        </button>
       </div>
 
       <div class="mb1">
@@ -147,6 +149,17 @@ export default {
         .catch((err) => {
           console.log(err);
         });
+    },
+
+    clickedShareButton() {
+      window.Kakao.Share.sendDefault({
+        objectType: "text",
+        text: `내 PC사양은\n CPU: ${this.computerInformation.cpu},\n Drive: ${this.computerInformation.drive_capacity}\n VGA: ${this.computerInformation.graphic_card}\n OS: ${this.computerInformation.os}\n Ram: ${this.computerInformation.ram} 입니다.`,
+        link: {
+          mobileWebUrl: "https://developers.kakao.com",
+          webUrl: "https://developers.kakao.com",
+        },
+      });
     },
   },
 };
