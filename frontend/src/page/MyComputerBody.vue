@@ -13,21 +13,19 @@
       <router-view />
     </div>
     <div class="bodyRight">
-      <div class="advertisementBox">
-        <ins
-          class="kakao_ad_area advertisement"
-          style="display: none"
-          data-ad-unit="DAN-6U9FgS8SxjRyM0qS"
-          data-ad-width="300"
-          data-ad-height="250"
-        ></ins>
-      </div>
+      <!-- <div class="advertisementBox">
+        <Advence />
+      </div> -->
     </div>
   </div>
 </template>
 
 <script>
-export default {};
+// import Advence from "@/components/Advence.vue";
+
+export default {
+  // components: { Advence },
+};
 </script>
 
 <style scoped>
