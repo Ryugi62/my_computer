@@ -21,7 +21,7 @@ const connection = mysql.createConnection({
 connection.connect();
 console.log("mysql connected");
 
-// make table
+// make hardware table
 connection.query(
   "CREATE TABLE IF NOT EXISTS hardware (ip varchar(30) not null, os varchar(30) not null, cpu varchar(30) not null, ram varchar(30) not null, graphic_card varchar(30) not null, bios varchar(30) not null, mainboard_manufacturer varchar(30) not null, drive_capacity varchar(30) not null) ENGINE=MYISAM CHARSET=utf8;",
   (err) => {
@@ -29,8 +29,18 @@ connection.query(
   }
 );
 
+// make admin table
 connection.query(
   "CREATE TABLE IF NOT EXISTS admin (id varchar(30) not null, password varchar(30) not null) ENGINE=MYISAM CHARSET=utf8;",
+  (err) => {
+    if (err) throw err;
+  }
+);
+
+// make post table
+connection.query(
+  // create post table
+  "CREATE TABLE IF NOT EXISTS post (id int not null auto_increment, title text not null, content text not null, date text not null, primary key(id)) ENGINE=MYISAM CHARSET=utf8;",
   (err) => {
     if (err) throw err;
   }
@@ -118,6 +128,88 @@ app.post("/api/login", (req, res) => {
         } else {
           res.send(result);
         }
+      }
+    }
+  );
+});
+
+app.post("/api/writePost", (req, res) => {
+  connection.query(
+    "INSERT INTO post (title, content, date) VALUES (?, ?, ?)",
+    [req.body.title, req.body.content, new Date().toLocaleString()],
+    (err, result) => {
+      if (err) {
+        console.log(err);
+        res.send(err);
+      } else {
+        console.log(result);
+        res.send("success");
+      }
+    }
+  );
+});
+
+app.post("/api/editPost", (req, res) => {
+  connection.query(
+    "UPDATE post SET title = ?, content = ?, date = ? WHERE id = ?",
+    [req.body.title, req.body.content, req.body.date, req.body.id],
+    (err, result) => {
+      if (err) {
+        console.log(err);
+      } else {
+        console.log(
+          req.body.title,
+          req.body.content,
+          req.body.date,
+          req.body.id
+        );
+        console.log(result);
+        res.send("success");
+      }
+    }
+  );
+});
+
+// delete post
+app.post("/api/deletePost", (req, res) => {
+  connection.query(
+    "DELETE FROM post WHERE id = ?",
+    [req.body.id],
+    (err, result) => {
+      if (err) {
+        console.log(err);
+        res.send(err);
+      } else {
+        console.log(result);
+        res.send("success");
+      }
+    }
+  );
+});
+
+// show post list
+app.post("/api/getPostList", (req, res) => {
+  connection.query("SELECT * FROM post", (err, result) => {
+    if (err) {
+      console.log(err);
+    } else {
+      console.log(result);
+      res.send(result);
+    }
+  });
+});
+
+// show post detail
+app.post("/api/getPostDetail", (req, res) => {
+  connection.query(
+    "SELECT * FROM post WHERE id = ?",
+    [req.body.id],
+    (err, result) => {
+      if (err) {
+        console.log(err);
+      } else {
+        console.log(result);
+        res.send(result);
       }
     }
   );

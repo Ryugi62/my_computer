@@ -5,30 +5,42 @@
         <div class="card">
           <div class="card-header">
             <h4 class="card-title">공지사항</h4>
+            <!-- go list button home icon -->
+            <div
+              class="btn-group"
+              role="group"
+              aria-label="Basic example"
+              v-if="mode === 'Detail'"
+            >
+              <button
+                type="button"
+                class="btn btn-secondary"
+                @click="mode = 'List'"
+              >
+                <i class="fas fa-home"></i>
+              </button>
+            </div>
           </div>
-          <div class="card-body">
+          <div class="card-body listBox" v-if="mode === 'List'">
             <div class="table-responsive">
               <table class="table table-hover">
+                <!-- text align center -->
                 <thead class="text-primary">
                   <th>번호</th>
                   <th>제목</th>
-                  <th>작성자</th>
                   <th>작성일</th>
-                  <th>조회수</th>
                 </thead>
                 <tbody>
                   <tr
                     class="note"
-                    @click="goToNoticeDetail"
+                    @click="goToNoticeDetail(idx)"
                     v-for="(notice, idx) in noticeArr"
                     v-show="(pageNum - 1) * 14 <= idx && idx < pageNum * 14"
                     :key="idx"
                   >
                     <td>{{ idx + 1 }}</td>
                     <td>{{ notice.title }}</td>
-                    <td>{{ notice.writer }}</td>
                     <td>{{ notice.date }}</td>
-                    <td>{{ notice.view }}</td>
                   </tr>
                 </tbody>
               </table>
@@ -88,6 +100,41 @@
               </ul>
             </nav>
           </div>
+          <div class="card-body detailBox" v-else>
+            <div class="table-responsive">
+              <table class="table table-hover">
+                <thead class="text-primary">
+                  <th>제목</th>
+                  <th>작성일</th>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td>{{ detail.title }}</td>
+                    <td>{{ detail.date }}</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+            <div class="table-responsive">
+              <table class="table table-hover">
+                <thead class="text-primary">
+                  <th>내용</th>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td>
+                      <textarea
+                        class="form-control"
+                        rows="10"
+                        readonly
+                        v-model="detail.content"
+                      ></textarea>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
         </div>
       </div>
     </div>
@@ -95,39 +142,74 @@
 </template>
 
 <script>
+import axios from "axios";
+
 export default {
   name: "MyComputer_Notice",
 
-  mounted() {},
-
   data() {
     return {
+      mode: "List",
+      detail: {
+        title: "",
+        content: "",
+        data: "",
+      },
       pageNum: 1,
-      noticeArr: [
-        {
-          title: "공지사항입니다",
-          writer: "관리자",
-          date: "2021-01-01",
-          view: 0,
-        },
-      ],
+      noticeArr: [],
     };
   },
 
+  mounted() {
+    this.mode = "List";
+
+    this.getNoticeList();
+  },
+
   methods: {
-    goToNoticeDetail() {
-      this.$router.push("/noticeDetail");
+    goToNoticeDetail(idx) {
+      this.mode = "Detail";
+
+      this.detail.title = this.noticeArr[idx].title;
+      this.detail.content = this.noticeArr[idx].content;
+      this.detail.date = this.noticeArr[idx].date;
+    },
+
+    getNoticeList() {
+      axios
+        .post("/api/getPostList")
+        .then((res) => {
+          this.noticeArr = res.data;
+          console.log(this.noticeArr);
+        })
+        .catch((err) => {
+          console.log(err);
+        });
     },
   },
 };
 </script>
 
-<style>
-.card-body {
-  text-align: center;
+<style scoped>
+.container {
+  width: 100%;
+  height: 100%;
 }
 
-.note {
-  cursor: pointer;
+.card {
+  margin-top: 20px;
+}
+
+.card-header {
+  display: flex;
+  justify-content: space-between;
+}
+
+.card-body {
+  padding: 0;
+}
+
+.detailBox {
+  padding: 20px;
 }
 </style>
