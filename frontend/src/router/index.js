@@ -5,7 +5,6 @@ import MyHardware from "../views/MyHardware.vue";
 import Admin from "../views/Admin.vue";
 import AdminLogin from "../views/AdminLogin.vue";
 import Notice from "../views/Notice.vue";
-import Post from "../views/Post.vue";
 
 const routes = [
   {
@@ -37,11 +36,6 @@ const routes = [
     path: "/notice",
     name: "notice",
     component: Notice,
-  },
-  {
-    path: "/post",
-    name: "post",
-    component: Post,
   },
   {
     path: "/:catchAll(.*)",
