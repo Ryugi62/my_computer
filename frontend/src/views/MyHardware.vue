@@ -1,5 +1,13 @@
 <template>
   <div class="myHardwareBackground">
+    <ins
+      class="kakao_ad_area advertisement"
+      style="display: none"
+      data-ad-unit="DAN-6U9FgS8SxjRyM0qS"
+      data-ad-width="300"
+      data-ad-height="250"
+    ></ins>
+
     <div class="hardwareTableBox">
       <table class="table">
         <thead>
@@ -172,6 +180,10 @@ export default {
   display: flex;
   flex-direction: column;
   text-align: center;
+}
+
+.advertisement {
+  margin: auto;
 }
 
 .hardwareTableBox {

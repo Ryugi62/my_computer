@@ -1,5 +1,12 @@
 <template>
   <div class="buttonBackground">
+    <ins
+      class="kakao_ad_area advertisement"
+      style="display: none"
+      data-ad-unit="DAN-6U9FgS8SxjRyM0qS"
+      data-ad-width="300"
+      data-ad-height="250"
+    ></ins>
     <button
       type="button"
       class="checkButton btn btn-primary"
@@ -64,5 +71,9 @@ export default {
   align-items: center;
   justify-content: center;
   background: #4472c4;
+}
+
+.advertisement {
+  margin: auto;
 }
 </style>
