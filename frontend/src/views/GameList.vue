@@ -15,18 +15,23 @@
         </thead>
         <tbody>
           <tr v-for="(gameInformation, idx1) in gameInformationArr" :key="idx1">
-            <td v-for="(info, idx2) in gameInformation" :key="idx2">
-              <span v-if="idx2 === 'game'">{{ info }}</span>
-              <i v-else-if="idx2" class="fa-solid fa-check okCheck"></i>
-              <i v-else class="fa-solid fa-x notCheck"></i>
+            <td v-for="(info, idx2, l) in gameInformation" :key="idx2">
+              <span v-if="idx2 === 'name'">{{ info }}</span>
+              <i
+                v-else-if="
+                  compareInfo(gameInformation[partList[l - 1]], partList[l - 1])
+                "
+                class="fa-solid fa-check okCheck"
+              />
+              <i v-else class="fa-solid fa-x notCheck" />
             </td>
           </tr>
         </tbody>
       </table>
     </div>
     <div class="shareButtonBox">
-      <button type="button" class="shareButton btn btn-primary">
-        내 PC 사양 공유하기
+      <button class="btn btn-primary shareButton" @click="clickedShareButton">
+        내 PC사양 공유하기
       </button>
     </div>
   </div>
@@ -39,73 +44,37 @@ export default {
   data() {
     return {
       computerInformation: {
-        bios: "X",
+        // cpu: "AMD Ryzen 7 5800X3D 8-Core Pro",
+        // drive: "931 GB",
+        // vga: "NVIDIA GeForce RTX 3060 Ti",
+        // os: "Window-10-10.0.19045-SPO",
+        // ram: "32 GB",
         cpu: "X",
-        drive_capacity: "X",
-        graphic_card: "X",
-        mainboard_manufacturer: "X",
+        drive: "X",
+        vga: "X",
         os: "X",
         ram: "X",
       },
 
       theadTitleArr: [
         "게임",
-        "운영체제",
-        "CPU",
-        "RAM",
-        "그래픽카드",
-        "바이오스 버전",
-        "메인보드 제조사",
-        "드라이브 용량",
+        "CPU (시피유)",
+        "Drive (하드용량)",
+        "VGA (그래픽카드)",
+        "OS (윈도우 버전)",
+        "Ram (메모리)",
       ],
 
-      gameInformationArr: [
-        {
-          game: "리그오브레전드",
-          os: "Windows 10",
-          cpu: "Inter 9th Gen",
-          ram: "16GB",
-          grapichCard: "GTX 1660",
-          biosVersion: "1.0.0",
-          mainboardManufacturer: "MSI", // Mainboard manufacturer
-          driveCapacity: "500GB", //
-        },
-        {
-          game: "배틀그라운드",
-          os: "Windows 10",
-          cpu: "Inter 9th Gen",
-          ram: "16GB",
-          grapichCard: "GTX 1660",
-          biosVersion: "1.0.0",
-          mainboardManufacturer: "MSI", // Mainboard manufacturer
-          driveCapacity: "500GB", //
-        },
-        {
-          game: "크레이지아케이드",
-          os: "Windows 10",
-          cpu: "Inter 9th Gen",
-          ram: "16GB",
-          grapichCard: "GTX 1660",
-          biosVersion: "1.0.0",
-          mainboardManufacturer: "MSI", // Mainboard manufacturer
-          driveCapacity: "500GB", //
-        },
-        {
-          game: "카트라이더",
-          os: "Windows 10",
-          cpu: "Inter 9th Gen",
-          ram: "16GB",
-          grapichCard: "GTX 1660",
-          biosVersion: "1.0.0",
-          mainboardManufacturer: "MSI", // Mainboard manufacturer
-          driveCapacity: "500GB", //
-        },
-      ],
+      partList: ["cpu", "drive", "vga", "os", "ram"],
+
+      gameInformationArr: [],
     };
   },
 
   mounted() {
     this.getMyIP();
+
+    this.getGameList();
   },
 
   methods: {
@@ -123,11 +92,9 @@ export default {
     setComputerData() {
       let cookieObj = this.getCookie();
       if (
-        cookieObj.bios === "" ||
         cookieObj.cpu === "" ||
         cookieObj.drive_capacity === "" ||
         cookieObj.graphic_card === undefined ||
-        cookieObj.mainboard_manufacturer === "" ||
         cookieObj.os === "" ||
         cookieObj.ram === ""
       ) {
@@ -139,21 +106,11 @@ export default {
     },
 
     setComputerInfo(data) {
-      const {
-        bios,
-        cpu,
-        drive_capacity,
-        graphic_card,
-        mainboard_manufacturer,
-        os,
-        ram,
-      } = data;
+      const { cpu, drive_capacity, graphic_card, os, ram } = data;
 
-      this.computerInformation.bios = bios;
       this.computerInformation.cpu = cpu;
       this.computerInformation.drive_capacity = drive_capacity;
       this.computerInformation.graphic_card = graphic_card;
-      this.computerInformation.mainboard_manufacturer = mainboard_manufacturer;
       this.computerInformation.os = os;
       this.computerInformation.ram = ram;
     },
@@ -183,11 +140,9 @@ export default {
           },
         })
         .then((response) => {
-          document.cookie = `bios=${response.data[0].bios}`;
           document.cookie = `cpu=${response.data[0].cpu}`;
           document.cookie = `drive_capacity=${response.data[0].drive_capacity}`;
           document.cookie = `graphic_card=${response.data[0].graphic_card}`;
-          document.cookie = `mainboard_manufacturer=${response.data[0].mainboard_manufacturer}`;
           document.cookie = `os=${response.data[0].os}`;
           document.cookie = `ram=${response.data[0].ram}`;
 
@@ -196,6 +151,72 @@ export default {
         .catch((err) => {
           console.log(err);
         });
+    },
+
+    getGameList() {
+      axios
+        .post("/api/getGameList")
+        .then((response) => {
+          const tempArray = response.data;
+
+          tempArray.forEach((game) => {
+            game.cpu = this.computerInformation.cpu.includes("AMD")
+              ? game.cpu.amd
+              : game.cpu.intel;
+          });
+
+          this.gameInformationArr = new Array().concat(tempArray);
+        })
+        .catch((error) => {
+          console.log(error);
+        });
+    },
+
+    compareInfo(info, idx2) {
+      if (info === "X") return false;
+
+      if (idx2 === "cpu") {
+        let userCpuName = "";
+        const userCpu = this.computerInformation[idx2];
+        const temp = userCpu.split(" ");
+
+        if (userCpu.includes("AMD")) {
+          // temp [ 0 ~ 3 ] : Amd Ryzen 7 5800X
+          userCpuName = temp[0] + " " + temp[1] + " " + temp[2] + " " + temp[3];
+        } else {
+          // temp [ 0 ~ 2 ] : Intel Core i7-10700K
+          userCpuName = temp[2];
+        }
+        return userCpuName.toLowerCase() >= info.toLowerCase();
+      } else if (idx2 === "drive" || idx2 === "ram") {
+        return (
+          Number(this.computerInformation[idx2].split(" ")[0]) >=
+          Number(info.split(" ")[0])
+        );
+      } else if (idx2 === "vga") {
+        // 문자열의 첫번째 단어 삭제 (Nvidia, AMD)
+        const vga = this.computerInformation[idx2].split(" ");
+        vga.shift();
+        this.computerInformation[idx2] = vga.join(" ");
+
+        return (
+          this.computerInformation[idx2].toLowerCase() >= info.toLowerCase()
+        );
+      } else if (idx2 === "os") {
+        let temp = this.computerInformation[idx2].split("-");
+        return Number(temp[1]) >= Number(info.split(" ")[1]);
+      }
+    },
+
+    clickedShareButton() {
+      window.Kakao.Share.sendDefault({
+        objectType: "text",
+        text: `내 PC사양은\n CPU: ${this.computerInformation.cpu},\n Drive: ${this.computerInformation.drive_capacity}\n VGA: ${this.computerInformation.graphic_card}\n OS: ${this.computerInformation.os}\n Ram: ${this.computerInformation.ram} 입니다.`,
+        link: {
+          mobileWebUrl: "https://developers.kakao.com",
+          webUrl: "https://developers.kakao.com",
+        },
+      });
     },
   },
 };
