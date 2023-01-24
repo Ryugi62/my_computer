@@ -46,6 +46,16 @@ connection.query(
   }
 );
 
+// make gameList table
+// name, cpu, drive, vga, os, ram
+connection.query(
+  // name, intelCpu, amdCpu, drive, vga, os, ram
+  "CREATE TABLE IF NOT EXISTS gameList (id int not null auto_increment, name text not null, intelCpu text not null, amdCpu text not null, drive text not null, vga text not null, os text not null, ram text not null, primary key(id)) ENGINE=MYISAM CHARSET=utf8;",
+  (err) => {
+    if (err) throw err;
+  }
+);
+
 app.use(cors());
 app.use(history());
 app.use(express.static("dist"));
@@ -213,6 +223,49 @@ app.post("/api/getPostDetail", (req, res) => {
       }
     }
   );
+});
+
+app.post("/api/setGameList", (req, res) => {
+  const { name, cpu, drive, vga, os, ram } = req.body;
+
+  connection.query(
+    "INSERT INTO gameList (name, intelCpu, amdCpu, drive, vga, os, ram) VALUES (?, ?, ?, ?, ?, ?, ?)",
+    [name, cpu.intel, cpu.amd, drive, vga, os, ram],
+    (err, result) => {
+      if (err) {
+        console.log(err);
+      } else {
+        console.log(result);
+        res.send("success");
+      }
+    }
+  );
+});
+
+app.post("/api/getGameList", (req, res) => {
+  connection.query("SELECT * FROM gameList", (err, result) => {
+    if (err) {
+      console.log(err);
+    } else {
+      // in result remove id
+      result.forEach((item) => {
+        delete item.id;
+      });
+
+      // cpu object in amd and intel
+      result.forEach((item) => {
+        item.cpu = {
+          amd: item.amdCpu,
+          intel: item.intelCpu,
+        };
+        delete item.amdCpu;
+        delete item.intelCpu;
+      });
+
+      console.log(result);
+      res.send(result);
+    }
+  });
 });
 
 // start server
