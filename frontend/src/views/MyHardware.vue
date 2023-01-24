@@ -55,22 +55,24 @@ import DownloadButton from "@/components/DownloadProgramButton.vue";
 import axios from "axios";
 
 export default {
+  name: "MyHardware",
+
   data() {
     return {
-      computerInformation: {
-        cpu: "X",
-        drive_capacity: "X",
-        graphic_card: "X",
-        os: "X",
-        ram: "X",
-      },
-
       computerParts: {
         cpu: "CPU (시피유)",
         drive_capacity: "Drive (하드용량)",
         graphic_card: "VGA (그래픽카드)",
         os: "OS (윈도우 버전)",
         ram: "Ram (메모리)",
+      },
+
+      computerInformation: {
+        cpu: "X",
+        drive_capacity: "X",
+        graphic_card: "X",
+        os: "X",
+        ram: "X",
       },
     };
   },
