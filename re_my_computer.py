@@ -32,19 +32,21 @@ def create_gui_window():
 
 # if click button
 def click_button():
-    # # send my computer information to server
-    # sendHardwareInfo(get_user_ip_address(), get_my_computer_info())
+    # get my computer information
+    cpu, built_in_vga, dedicated_vga, ram, full_drive, free_drive, os, mainboard_chipset, mainboard_manufacturer = get_my_computer_info()
+
+    # get ip address
+    ip = get_user_ip_address()
+
+    # send my computer information to server
+    sendHardwareInfo(ip, cpu, built_in_vga, dedicated_vga, ram, full_drive,
+                     free_drive, os, mainboard_chipset, mainboard_manufacturer)
 
     # open my computer information page
     webbrowser.open("http://xn--220br78cbrb12f.com/myHardware")
 
     # stop tk.mainloop() and close window
     tk._exit()
-
-
-# get user ip address in windows with python
-def get_user_ip_address():
-    return socket.gethostbyname(socket.gethostname())
 
 
 # get cpu information
@@ -122,6 +124,11 @@ def get_my_computer_info():
     print("Mainboard Manufacturer: " + board_manufacturer)
 
     return cpu, built_in_vga, dedicated_vga, ram, full_drive, free_drive, os, board_chipset, board_manufacturer
+
+
+# get user ip address in windows with python
+def get_user_ip_address():
+    return socket.gethostbyname(socket.gethostname())
 
 
 # send my computer information to my computer hardware database
