@@ -195,13 +195,10 @@ export default {
         );
       } else if (idx2 === "vga") {
         // 문자열의 첫번째 단어 삭제 (Nvidia, AMD)
-        const vga = this.computerInformation[idx2].split(" ");
-        vga.shift();
-        this.computerInformation[idx2] = vga.join(" ");
+        let vga = this.computerInformation[idx2].split(" ");
+        vga = vga.slice(1, vga.length).join(" ");
 
-        return (
-          this.computerInformation[idx2].toLowerCase() >= info.toLowerCase()
-        );
+        return vga.toLowerCase() >= info.toLowerCase();
       } else if (idx2 === "os") {
         let temp = this.computerInformation[idx2].split("-");
         return Number(temp[1]) >= Number(info.split(" ")[1]);
