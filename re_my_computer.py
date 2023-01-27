@@ -128,7 +128,9 @@ def get_my_computer_info():
 
 # get user ip address in windows with python
 def get_user_ip_address():
-    return socket.gethostbyname(socket.gethostname())
+    ip = socket.gethostbyname(socket.gethostname())
+    print("IP: " + ip)
+    return ip
 
 
 # send my computer information to my computer hardware database
