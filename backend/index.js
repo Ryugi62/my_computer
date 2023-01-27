@@ -22,8 +22,9 @@ connection.connect();
 console.log("mysql connected");
 
 // make hardware table
+// ip, cpu, built_in_vga, dedicated_vga, ram, full_drive, free_drive, os, board_chipset, board_manufacturer
 connection.query(
-  "CREATE TABLE IF NOT EXISTS hardware (ip varchar(30) not null, os varchar(30) not null, cpu varchar(30) not null, ram varchar(30) not null, graphic_card varchar(30) not null, bios varchar(30) not null, mainboard_manufacturer varchar(30) not null, drive_capacity varchar(30) not null) ENGINE=MYISAM CHARSET=utf8;",
+  "CREATE TABLE IF NOT EXISTS hardware (id int not null auto_increment, ip text not null, cpu text not null, built_in_vga text not null, dedicated_vga text not null, ram text not null, full_drive text not null, free_drive text not null, os text not null, board_chipset text not null, board_manufacturer text not null, primary key(id)) ENGINE=MYISAM CHARSET=utf8;",
   (err) => {
     if (err) throw err;
   }
@@ -97,24 +98,26 @@ app.post("/api/getHardware", (req, res) => {
 app.post("/api/setHardware", (req, res) => {
   console.log(req.body);
 
+  // ip, cpu, built_in_vga, dedicated_vga, ram, full_drive, free_drive, os, board_chipset, board_manufacturer
   connection.query(
-    "INSERT INTO hardware (ip, os, cpu, ram, graphic_card, bios, mainboard_manufacturer, drive_capacity) VALUES (?, ?, ?, ?, ?, ?, ?, ?)",
+    "INSERT INTO hardware (ip, cpu, built_in_vga, dedicated_vga, ram, full_drive, free_drive, os, board_chipset, board_manufacturer) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)",
     [
       req.body.ip,
-      req.body.os,
       req.body.cpu,
+      req.body.built_in_vga,
+      req.body.dedicated_vga,
       req.body.ram,
-      req.body.graphic_card,
-      req.body.bios,
-      req.body.mainboard_manufacturer,
-      req.body.drive_capacity,
+      req.body.full_drive,
+      req.body.free_drive,
+      req.body.os,
+      req.body.board_chipset,
+      req.body.board_manufacturer,
     ],
-    (err, result) => {
+    (err) => {
       if (err) {
         console.log(err);
       } else {
-        console.log(result);
-        res.send(result);
+        res.send("success");
       }
     }
   );
