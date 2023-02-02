@@ -7,31 +7,11 @@ import webbrowser
 import tkinter as tk
 
 
-# create gui window for my computer information
-def create_gui_window():
-    # create window
-    window = tk.Tk()
-
-    # set window title
-    window.title("Hello World")
-
-    # set window size
-    window.geometry("300x200")
-
-    # create a label
-    label = tk.Label(window, text="버튼을 눌러 사용자의\n컴퓨터 정보를 확인하세요.")
-    label.place(x=80, y=40)
-
-    # create a button
-    button = tk.Button(window, text="Click Me", command=click_button)
-    button.place(x=105, y=90)
-
-    # can't resize window
-    window.resizable(False, False)
+from playsound import playsound
+from tkinter import messagebox
 
 
-# if click button
-def click_button():
+def main():
     # get my computer information
     cpu, built_in_vga, dedicated_vga, ram, full_drive, free_drive, os, mainboard_chipset, mainboard_manufacturer = get_my_computer_info()
 
@@ -42,11 +22,11 @@ def click_button():
     sendHardwareInfo(ip, cpu, built_in_vga, dedicated_vga, ram, full_drive,
                      free_drive, os, mainboard_chipset, mainboard_manufacturer)
 
-    # open my computer information page
-    webbrowser.open("http://xn--220br78cbrb12f.com/myHardware")
+    # open my computer gamelist website
+    open_website()
 
-    # stop tk.mainloop() and close window
-    tk._exit()
+    # open alert window
+    open_alert()
 
 
 # get cpu information
@@ -135,7 +115,8 @@ def get_user_ip_address():
 
 # send my computer information to my computer hardware database
 def sendHardwareInfo(ip, cpu, built_in_vga, dedicated_vga, ram, full_drive, free_drive, os, board_chipset, board_manufacturer):
-    url = "http://xn--220br78cbrb12f.com/api/setHardware"
+    # url = "http://xn--220br78cbrb12f.com/api/setHardware"
+    url = "http://localhost:3000/api/setHardware"
 
     data = {
         "ip": ip,
@@ -160,21 +141,22 @@ def sendHardwareInfo(ip, cpu, built_in_vga, dedicated_vga, ram, full_drive, free
 
 
 # open my computer gamelist website
-def open_browser():
-    pass
+def open_website():
+    webbrowser.open("http://xn--220br78cbrb12f.com/myHardware")
 
 
-def open_my_computer_gamelist_website():
-    pass
+# open messagebox
+def open_alert():
+    root = tk.Tk()
+    root.withdraw()
 
+    # background music
+    playsound("sound.mp3")
 
-# main function
-def main():
-    # create gui window
-    create_gui_window()
+    messagebox.showinfo(
+        "내컴퓨터.com", "사양 스캔이 완료되었습니다.\n다운받은 프로그램을 삭제하여도 추후 사양을 다시 확인할 수 있습니다.")
 
-    # start gui window
-    tk.mainloop()
+    root.destroy()
 
 
 # run main function
