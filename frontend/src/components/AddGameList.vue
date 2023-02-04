@@ -53,14 +53,24 @@
       <!-- 그래픽카드 -->
       <div class="addGameListGpuInput inputBox">
         <input
-          ref="vga"
+          ref="externalGpu"
           type="text"
-          list="gpuList"
-          placeholder="gpu를 입력해주세요."
+          list="externalGpuList"
+          placeholder="외장 gpu를 입력해주세요."
         />
-        <datalist id="gpuList">
+        <datalist id="externalGpuList">
           <!-- option v-for vgaArray -->
-          <option v-for="vga in vgaArray" :value="vga" :key="vga" />
+          <option v-for="vga in external_vga" :value="vga" :key="vga"></option>
+        </datalist>
+        <input
+          ref="internalGpu"
+          type="text"
+          list="internalGpuList"
+          placeholder="내장 gpu를 입력해주세요."
+        />
+        <datalist id="internalGpu">
+          <!-- option v-for vgaArray -->
+          <option v-for="vga in internal_vga" :value="vga" :key="vga"></option>
         </datalist>
       </div>
 
@@ -245,7 +255,7 @@ export default {
         "64 TB",
       ],
 
-      vgaArray: [
+      external_vga: [
         "GeForce RTX 3090",
         "GeForce RTX 3080",
         "GeForce RTX 3070",
@@ -379,6 +389,66 @@ export default {
         "AMD Radeon R7 340",
       ],
 
+      internal_vga: [
+        "GeForce RTX 3090",
+        "GeForce RTX 3080",
+        "GeForce RTX 3070",
+        "GeForce RTX 3060 Ti",
+        "GeForce RTX 3060",
+        "GeForce RTX 3050 Ti",
+        "GeForce RTX 3050",
+        "GeForce RTX 3040",
+        "GeForce GTX 1660 Ti",
+        "GeForce GTX 1660 Super",
+        "GeForce GTX 1660",
+        "GeForce GTX 1650 Super",
+        "GeForce GTX 1650",
+        "GeForce GTX 1080 Ti",
+        "GeForce GTX 1080",
+        "GeForce GTX 1070 Ti",
+        "GeForce GTX 1070",
+        "GeForce GTX 1060",
+        "GeForce GTX 1050 Ti",
+        "GeForce GTX 1050",
+        "GeForce GTX 980 Ti",
+        "GeForce GTX 980",
+        "GeForce GTX 970",
+        "GeForce GTX 960",
+        "GeForce GTX 950",
+        "GeForce GTX Titan X",
+        "GeForce GTX Titan",
+        "GeForce GTX 780 Ti",
+        "GeForce GTX 780",
+        "GeForce GTX 770",
+        "GeForce GTX 760",
+        "GeForce GTX 750 Ti",
+        "GeForce GTX 750",
+        "GeForce GTX 745",
+        "GeForce GT 740",
+        "GeForce GT 730",
+        "GeForce GT 720",
+        "GeForce GT 710",
+        "GeForce GT 705",
+        "GeForce GT 703",
+        "GeForce GT 640",
+        "GeForce GT 630",
+        "GeForce GT 620",
+        "GeForce GT 610",
+        "GeForce 605",
+        "GeForce GT 520",
+        "GeForce GT 510",
+        "GeForce GT 240",
+        "GeForce GT 220",
+        "GeForce GTS 450",
+        "GeForce GTS 240",
+        "GeForce GTS 150",
+        "GeForce GTS 140",
+        "GeForce GTS 130",
+        "GeForce GT 130",
+        "GeForce GT 120",
+        "GeForce G100",
+      ],
+
       osArray: [
         "Windows 10",
         "Windows 8.1",
@@ -431,7 +501,8 @@ export default {
       const intelCpu = this.$refs.intelCpu.value;
       const amdCpu = this.$refs.amdCpu.value;
       const drive = this.$refs.drive.value;
-      const vga = this.$refs.vga.value;
+      const external_vga = this.$refs.external_vga.value;
+      const internal_vga = this.$refs.internal_vga.value;
       const os = this.$refs.os.value;
       const ram = this.$refs.ram.value;
 
@@ -440,7 +511,8 @@ export default {
         gameName === "" ||
         (intelCpu === "" && amdCpu === "") ||
         drive === "" ||
-        vga === "" ||
+        external_vga === "" ||
+        internal_vga === "" ||
         os === "" ||
         ram === ""
       ) {
@@ -457,7 +529,10 @@ export default {
             amd: amdCpu,
           },
           drive: drive,
-          vga: vga,
+          vga: {
+            external: external_vga,
+            internal: internal_vga,
+          },
           os: os,
           ram: ram,
         })
@@ -471,7 +546,8 @@ export default {
             this.$refs.intelCpu.value = "";
             this.$refs.amdCpu.value = "";
             this.$refs.drive.value = "";
-            this.$refs.vga.value = "";
+            this.$refs.external_vga.value = "";
+            this.$refs.internal_vga.value = "";
             this.$refs.os.value = "";
             this.$refs.ram.value = "";
           }
