@@ -9,22 +9,21 @@
     ></ins>
 
     <div class="hardwareTableBox">
-      <table class="table">
+      <!-- thead left tbody right table, border 1px black-->
+      <table class="table table-bordered table-hover">
+        <!-- thead width -->
         <thead>
           <tr>
-            <th
-              scope="col"
-              v-for="(theadTitle, idx) of computerInformation"
-              :key="idx"
-            >
-              {{ computerParts[idx] }}
-            </th>
+            <th scope="col" class="tableHeader">컴퓨터 부품</th>
+            <th scope="col" class="tableHeader">내 PC사양</th>
           </tr>
         </thead>
         <tbody>
-          <td v-for="(info, idx2) in computerInformation" :key="idx2">
-            {{ info }}
-          </td>
+          <tr v-for="(value, key) in computerParts" :key="key">
+            <!-- th width is short than td -->
+            <th scope="row" class="tableBody">{{ value }}</th>
+            <td class="tableBody">{{ computerInformation[key] }}</td>
+          </tr>
         </tbody>
       </table>
     </div>
@@ -61,18 +60,22 @@ export default {
     return {
       computerParts: {
         cpu: "CPU (시피유)",
-        drive_capacity: "Drive (하드용량)",
-        graphic_card: "VGA (그래픽카드)",
-        os: "OS (윈도우 버전)",
-        ram: "Ram (메모리)",
+        mainboard: "M/B 메인보드",
+        external_vga: "외장 VGA (외장그래픽카드)",
+        internal_vga: "내장 VGA (내장그래픽카드)",
+        ram: "RAM (메모리)",
+        drive: "Drive (하드용량)",
+        os: "OS (운영체제)",
       },
 
       computerInformation: {
         cpu: "X",
-        drive_capacity: "X",
-        graphic_card: "X",
-        os: "X",
+        mainboard: "X",
+        external_vga: "X",
+        internal_vga: "X",
         ram: "X",
+        drive: "X",
+        os: "X",
       },
     };
   },
@@ -114,13 +117,14 @@ export default {
     },
 
     setComputerInfo(data) {
-      const { cpu, drive_capacity, graphic_card, os, ram } = data;
-
-      this.computerInformation.cpu = cpu;
-      this.computerInformation.drive_capacity = drive_capacity;
-      this.computerInformation.graphic_card = graphic_card;
-      this.computerInformation.os = os;
-      this.computerInformation.ram = ram;
+      // cpu, mainboard, external_vga, internal_vga, ram, drive, os
+      this.computerInformation.cpu = data.cpu;
+      this.computerInformation.mainboard = data.mainboard;
+      this.computerInformation.external_vga = data.external_vga;
+      this.computerInformation.internal_vga = data.internal_vga;
+      this.computerInformation.ram = data.ram;
+      this.computerInformation.drive = data.drive;
+      this.computerInformation.os = data.os;
     },
 
     getMyIP() {
@@ -129,12 +133,14 @@ export default {
         .get("https://api.ipify.org?format=json")
         .then((response) => {
           ip = response.data.ip;
+          console.log(ip);
           this.getComputerInfo(ip);
         })
         .catch((error) => {
           console.log(error);
         });
       return ip;
+      k;
     },
 
     getComputerInfo(ip) {
@@ -148,13 +154,17 @@ export default {
           },
         })
         .then((response) => {
-          document.cookie = `cpu=${response.data[0].cpu}`;
-          document.cookie = `drive_capacity=${response.data[0].drive_capacity}`;
-          document.cookie = `graphic_card=${response.data[0].graphic_card}`;
-          document.cookie = `os=${response.data[0].os}`;
-          document.cookie = `ram=${response.data[0].ram}`;
+          const { cpu, mainboard, external_vga, internal_vga, ram, drive, os } =
+            response.data[response.data.length - 1];
 
-          this.setComputerInfo(response.data[0]);
+          document.cookie = `cpu=${cpu};`;
+          document.cookie = `mainboard=${mainboard};`;
+          document.cookie = `external_vga=${external_vga};`;
+          document.cookie = `internal_vga=${internal_vga};`;
+          document.cookie = `ram=${ram};`;
+          document.cookie = `drive_capacity=${drive};`;
+          document.cookie = `os=${os};`;
+          this.setComputerInfo(response.data[response.data.length - 1]);
         })
         .catch((err) => {
           console.log(err);
@@ -189,23 +199,29 @@ export default {
 }
 
 .hardwareTableBox {
-  width: 80%;
+  width: 70%;
   height: fit-content;
   margin: auto auto 10px auto;
 }
 
 table {
-  text-align: center;
+  width: 100%;
+  border-color: black;
+  border-collapse: collapse;
 }
 
+thead {
+  background-color: #000000c2;
+  color: white;
+}
+
+/* th width is more short than td */
 th {
-  border: 1px solid black;
-  padding: 10px;
+  width: 30%;
 }
 
 td {
-  border: 1px solid black;
-  padding: 10px;
+  width: 70%;
 }
 
 .hardwareButtonBox {
