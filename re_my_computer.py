@@ -19,8 +19,8 @@ def main():
     ip = get_user_ip_address()
 
     # send my computer information to server
-    sendHardwareInfo(ip, cpu, built_in_vga, dedicated_vga, ram, full_drive,
-                     free_drive, os, mainboard_chipset, mainboard_manufacturer)
+    sendHardwareInfo(ip, cpu, mainboard_manufacturer,
+                     dedicated_vga, built_in_vga, ram, full_drive, os)
 
     # open my computer gamelist website
     open_website()
@@ -106,29 +106,27 @@ def get_my_computer_info():
     return cpu, built_in_vga, dedicated_vga, ram, full_drive, free_drive, os, board_chipset, board_manufacturer
 
 
-# get user ip address in windows with python
+# get my ip address
 def get_user_ip_address():
-    ip = socket.gethostbyname(socket.gethostname())
+    ip = requests.get("https://api.ipify.org?format=json").json()["ip"]
     print("IP: " + ip)
     return ip
 
 
 # send my computer information to my computer hardware database
-def sendHardwareInfo(ip, cpu, built_in_vga, dedicated_vga, ram, full_drive, free_drive, os, board_chipset, board_manufacturer):
+def sendHardwareInfo(ip, cpu, mainboard_manufacturer, dedicated_vga, built_in_vga, ram, full_drive, os):
     # url = "http://xn--220br78cbrb12f.com/api/setHardware"
     url = "http://localhost:3000/api/setHardware"
 
     data = {
         "ip": ip,
         "cpu": cpu,
-        "built_in_vga": built_in_vga,
-        "dedicated_vga": dedicated_vga,
+        "mainboard_manufacturer": mainboard_manufacturer,
+        "external_vga": dedicated_vga,
+        "internal_vga": built_in_vga,
         "ram": ram,
         "full_drive": full_drive,
-        "free_drive": free_drive,
         "os": os,
-        "board_chipset": board_chipset,
-        "board_manufacturer": board_manufacturer
     }
 
     headers = {
