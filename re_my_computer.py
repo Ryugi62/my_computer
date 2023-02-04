@@ -5,6 +5,7 @@ import platform
 import requests
 import webbrowser
 import tkinter as tk
+import wmi
 
 
 from playsound import playsound
@@ -36,15 +37,16 @@ def get_cpu_name():
 
 # get vga information
 def get_vga_name():
-    # how to get built-in graphics card name in windows with python
-    def get_built_in_vga_name():
-        return platform.processor()
+    built_in_vga = None
+    dedicated_vga = None
+    w = wmi.WMI()
+    for gpu in w.Win32_VideoController():
+        if "Intel" in gpu.Name:
+            built_in_vga = gpu.Name
+        else:
+            dedicated_vga = gpu.Name
 
-    # how to get dedicated graphics card name in windows with python
-    def get_dedicated_vga_name():
-        return platform.processor()
-
-    return get_built_in_vga_name(), get_dedicated_vga_name()
+    return str(built_in_vga), str(dedicated_vga)
 
 
 # get ram information
@@ -72,15 +74,14 @@ def get_os_name():
 
 # get mainboard information
 def get_mainboard_name():
-    # how to get mainboard chipset in windows with python
-    def get_mainboard_chipset():
-        return platform.processor()
+    chipset = None
+    manufacturer = None
+    w = wmi.WMI()
+    for motherboard in w.Win32_BaseBoard():
+        chipset = motherboard.Product
+        manufacturer = motherboard.Manufacturer
 
-    # how to get mainboard manufacturer in windows with python
-    def get_mainboard_manufacturer():
-        return platform.processor()
-
-    return get_mainboard_chipset(), get_mainboard_manufacturer()
+    return chipset, manufacturer
 
 
 # get my computer information
@@ -115,8 +116,8 @@ def get_user_ip_address():
 
 # send my computer information to my computer hardware database
 def sendHardwareInfo(ip, cpu, mainboard_manufacturer, dedicated_vga, built_in_vga, ram, full_drive, os):
-    # url = "http://xn--220br78cbrb12f.com/api/setHardware"
-    url = "http://localhost:3000/api/setHardware"
+    url = "http://xn--220br78cbrb12f.com/api/setHardware"
+    # url = "http://localhost:3000/api/setHardware"
 
     data = {
         "ip": ip,
