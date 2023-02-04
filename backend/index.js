@@ -22,9 +22,9 @@ connection.connect();
 console.log("mysql connected");
 
 // make hardware table
-// ip, cpu, built_in_vga, dedicated_vga, ram, full_drive, free_drive, os, board_chipset, board_manufacturer
+// ip cpu mainboard external_vga internal_vga ram drive os
 connection.query(
-  "CREATE TABLE IF NOT EXISTS hardware (id int not null auto_increment, ip text not null, cpu text not null, built_in_vga text not null, dedicated_vga text not null, ram text not null, full_drive text not null, free_drive text not null, os text not null, board_chipset text not null, board_manufacturer text not null, primary key(id)) ENGINE=MYISAM CHARSET=utf8;",
+  "CREATE TABLE IF NOT EXISTS hardware (id int not null auto_increment, ip varchar(30) not null, cpu text not null, mainboard text not null, external_vga text not null, internal_vga text not null, ram text not null, drive text not null, os text not null, primary key(id)) ENGINE=MYISAM CHARSET=utf8;",
   (err) => {
     if (err) throw err;
   }
@@ -47,11 +47,11 @@ connection.query(
   }
 );
 
-// make gameList table
+// make gameList tableㅅ
 // name, cpu, drive, vga, os, ram
 connection.query(
-  // name, intelCpu, amdCpu, drive, vga, os, ram
-  "CREATE TABLE IF NOT EXISTS gameList (id int not null auto_increment, name text not null, intelCpu text not null, amdCpu text not null, drive text not null, vga text not null, os text not null, ram text not null, primary key(id)) ENGINE=MYISAM CHARSET=utf8;",
+  // name, intelCpu, amdCpu, drive, external_vga, internal_vga, os, ram
+  "CREATE TABLE IF NOT EXISTS gameList (id int not null auto_increment, name text not null, intelCpu text not null, amdCpu text not null, drive text not null, external_vga text not null, internal_vga text not null, os text not null, ram text not null, primary key(id)) ENGINE=MYISAM CHARSET=utf8;",
   (err) => {
     if (err) throw err;
   }
@@ -81,6 +81,7 @@ app.post("/api/getProgram", (req, res) => {
 });
 
 app.post("/api/getHardware", (req, res) => {
+  console.log(req.body);
   connection.query(
     "SELECT * FROM hardware WHERE ip = ?",
     [req.body.json.ip],
@@ -98,20 +99,17 @@ app.post("/api/getHardware", (req, res) => {
 app.post("/api/setHardware", (req, res) => {
   console.log(req.body);
 
-  // ip, cpu, built_in_vga, dedicated_vga, ram, full_drive, free_drive, os, board_chipset, board_manufacturer
   connection.query(
-    "INSERT INTO hardware (ip, cpu, built_in_vga, dedicated_vga, ram, full_drive, free_drive, os, board_chipset, board_manufacturer) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)",
+    "INSERT INTO hardware (ip, cpu, mainboard, external_vga, internal_vga, ram, drive, os) VALUES (?, ?, ?, ?, ?, ?, ?, ?)",
     [
       req.body.ip,
       req.body.cpu,
-      req.body.built_in_vga,
-      req.body.dedicated_vga,
+      req.body.mainboard_manufacturer,
+      req.body.external_vga,
+      req.body.internal_vga,
       req.body.ram,
       req.body.full_drive,
-      req.body.free_drive,
       req.body.os,
-      req.body.board_chipset,
-      req.body.board_manufacturer,
     ],
     (err) => {
       if (err) {
@@ -232,8 +230,8 @@ app.post("/api/setGameList", (req, res) => {
   const { name, cpu, drive, vga, os, ram } = req.body;
 
   connection.query(
-    "INSERT INTO gameList (name, intelCpu, amdCpu, drive, vga, os, ram) VALUES (?, ?, ?, ?, ?, ?, ?)",
-    [name, cpu.intel, cpu.amd, drive, vga, os, ram],
+    "INSERT INTO gameList (name, intelCpu, amdCpu, drive, external_vga, internal_vga, os, ram) VALUES (?, ?, ?, ?, ?, ?, ?)",
+    [name, cpu.intel, cpu.amd, drive, vga.external, vga.internal, os, ram],
     (err, result) => {
       if (err) {
         console.log(err);
