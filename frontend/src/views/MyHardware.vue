@@ -140,7 +140,6 @@ export default {
           console.log(error);
         });
       return ip;
-      k;
     },
 
     getComputerInfo(ip) {
