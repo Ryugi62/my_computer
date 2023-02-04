@@ -1,29 +1,33 @@
 <template>
   <div class="gameListBackground">
     <div class="tableBox">
-      <table class="table">
+      <table class="table table-bordered table-hover">
         <thead>
           <tr>
-            <th
-              scope="col"
-              v-for="(theadTitle, idx) of theadTitleArr"
-              :key="idx"
-            >
-              {{ theadTitle }}
-            </th>
+            <th scope="col">게임</th>
+            <th scope="col">CPU (시피유)</th>
+            <th scope="col">Drive (하드용량)</th>
+            <th scope="col">외장 VGA (외장그래픽카드)</th>
+            <th scope="col">내장 VGA (내장그래픽카드)</th>
+            <th scope="col">OS (윈도우 버전)</th>
+            <th scope="col">Ram (메모리)</th>
           </tr>
         </thead>
         <tbody>
-          <tr v-for="(gameInformation, idx1) in gameInformationArr" :key="idx1">
-            <td v-for="(info, idx2, l) in gameInformation" :key="idx2">
-              <span v-if="idx2 === 'name'">{{ info }}</span>
-              <i
-                v-else-if="
-                  compareInfo(gameInformation[partList[l - 1]], partList[l - 1])
-                "
-                class="fa-solid fa-check okCheck"
-              />
-              <i v-else class="fa-solid fa-x notCheck" />
+          <tr v-for="game in gameInformationArr" :key="game.id">
+            <td v-for="key in Object.keys(game)" :key="key">
+              <template v-if="key !== 'game_name'">
+                <!-- font-color green -->
+                <i
+                  class="fas fa-check okCheck"
+                  v-if="compareInfo(key, game[key], computerInformation[key])"
+                >
+                </i>
+                <i class="fas fa-times notCheck" v-else> </i>
+              </template>
+              <template v-else>
+                {{ game[key] }}
+              </template>
             </td>
           </tr>
         </tbody>
@@ -44,14 +48,10 @@ export default {
   data() {
     return {
       computerInformation: {
-        // cpu: "AMD Ryzen 7 5800X3D 8-Core Pro",
-        // drive: "931 GB",
-        // vga: "NVIDIA GeForce RTX 3060 Ti",
-        // os: "Window-10-10.0.19045-SPO",
-        // ram: "32 GB",
         cpu: "X",
         drive: "X",
-        vga: "X",
+        external_vga: "X",
+        internal_vga: "X",
         os: "X",
         ram: "X",
       },
@@ -60,14 +60,77 @@ export default {
         "게임",
         "CPU (시피유)",
         "Drive (하드용량)",
-        "VGA (그래픽카드)",
+        "외장 VGA (외장그래픽카드)",
+        "내장 VGA (내장그래픽카드)",
         "OS (윈도우 버전)",
         "Ram (메모리)",
       ],
 
-      partList: ["cpu", "drive", "vga", "os", "ram"],
-
-      gameInformationArr: [],
+      gameInformationArr: [
+        {
+          game_name: "League of Legends",
+          cpu: "AMD Ryzen 5 3600",
+          drive_capacity: "500GB",
+          external_vga: "NVIDIA GeForce GTX 1660 SUPER",
+          internal_vga: "AMD Radeon RX 5500 XT",
+          os: "Windows 10",
+          ram: "16GB",
+        },
+        {
+          game_name: "Overwatch",
+          cpu: "AMD Ryzen 5 3600",
+          drive_capacity: "500GB",
+          external_vga: "NVIDIA GeForce GTX 1660 SUPER",
+          internal_vga: "AMD Radeon RX 5500 XT",
+          os: "Windows 10",
+          ram: "16GB",
+        },
+        {
+          game_name: "World of Warcraft",
+          cpu: "AMD Ryzen 5 3600",
+          drive_capacity: "500GB",
+          external_vga: "NVIDIA GeForce GTX 1660 SUPER",
+          internal_vga: "AMD Radeon RX 5500 XT",
+          os: "Windows 10",
+          ram: "16GB",
+        },
+        {
+          game_name: "Counter-Strike: Global Offensive",
+          cpu: "AMD Ryzen 5 3600",
+          drive_capacity: "500GB",
+          external_vga: "NVIDIA GeForce GTX 1660 SUPER",
+          internal_vga: "AMD Radeon RX 5500 XT",
+          os: "Windows 10",
+          ram: "16GB",
+        },
+        {
+          game_name: "Grand Theft Auto V",
+          cpu: "AMD Ryzen 5 3600",
+          drive_capacity: "500GB",
+          external_vga: "NVIDIA GeForce GTX 1660 SUPER",
+          internal_vga: "AMD Radeon RX 5500 XT",
+          os: "Windows 10",
+          ram: "16GB",
+        },
+        {
+          game_name: "PLAYERUNKNOWN'S BATTLEGROUNDS",
+          cpu: "AMD Ryzen 5 3600",
+          drive_capacity: "500GB",
+          external_vga: "NVIDIA GeForce GTX 1660 SUPER",
+          internal_vga: "AMD Radeon RX 5500 XT",
+          os: "Windows 10",
+          ram: "16GB",
+        },
+        {
+          game_name: "Fortnite",
+          cpu: "AMD Ryzen 5 3600",
+          drive_capacity: "500GB",
+          external_vga: "NVIDIA GeForce GTX 1660 SUPER",
+          internal_vga: "AMD Radeon RX 5500 XT",
+          os: "Windows 10",
+          ram: "16GB",
+        },
+      ],
     };
   },
 
@@ -92,11 +155,19 @@ export default {
     setComputerData() {
       let cookieObj = this.getCookie();
       if (
-        cookieObj.cpu === "" ||
-        cookieObj.drive_capacity === "" ||
-        cookieObj.graphic_card === undefined ||
-        cookieObj.os === "" ||
-        cookieObj.ram === ""
+        // cpu: "X",
+        // drive: "X",
+        // external_vga: "X",
+        // internal_vga: "X",
+        // os: "X",
+        // ram: "X",
+
+        cookieObj.cpu === "X" ||
+        cookieObj.drive === "X" ||
+        cookieObj.external_vga === "X" ||
+        cookieObj.internal_vga === "X" ||
+        cookieObj.os === "X" ||
+        cookieObj.ram === "X"
       ) {
         console.log("쿠키가 없어서 서버에서 정보를 가져옵니다.");
         this.getComputerInfo(this.getMyIP);
@@ -106,11 +177,12 @@ export default {
     },
 
     setComputerInfo(data) {
-      const { cpu, drive_capacity, graphic_card, os, ram } = data;
+      const { cpu, drive, external_vga, internal_vga, os, ram } = data;
 
       this.computerInformation.cpu = cpu;
-      this.computerInformation.drive_capacity = drive_capacity;
-      this.computerInformation.graphic_card = graphic_card;
+      this.computerInformation.drive = drive;
+      this.computerInformation.external_vga = external_vga;
+      this.computerInformation.internal_vga = internal_vga;
       this.computerInformation.os = os;
       this.computerInformation.ram = ram;
     },
@@ -140,13 +212,17 @@ export default {
           },
         })
         .then((response) => {
-          document.cookie = `cpu=${response.data[0].cpu}`;
-          document.cookie = `drive_capacity=${response.data[0].drive_capacity}`;
-          document.cookie = `graphic_card=${response.data[0].graphic_card}`;
-          document.cookie = `os=${response.data[0].os}`;
-          document.cookie = `ram=${response.data[0].ram}`;
+          const { cpu, drive, external_vga, internal_vga, os, ram } =
+            response.data[response.data.length - 1];
 
-          this.setComputerInfo(response.data[0]);
+          document.cookie = `cpu=${cpu};`;
+          document.cookie = `drive=${drive};`;
+          document.cookie = `external_vga=${external_vga};`;
+          document.cookie = `internal_vga=${internal_vga};`;
+          document.cookie = `os=${os};`;
+          document.cookie = `ram=${ram};`;
+
+          this.setComputerInfo(response.data[response.data.length - 1]);
         })
         .catch((err) => {
           console.log(err);
@@ -172,43 +248,32 @@ export default {
         });
     },
 
-    compareInfo(info, idx2) {
-      if (info === "X") return false;
+    compareInfo(key, game, com) {
+      if (com === "X") return false;
 
-      if (idx2 === "cpu") {
-        let userCpuName = "";
-        const userCpu = this.computerInformation[idx2];
-        const temp = userCpu.split(" ");
-
-        if (userCpu.includes("AMD")) {
-          // temp [ 0 ~ 3 ] : Amd Ryzen 7 5800X
-          userCpuName = temp[0] + " " + temp[1] + " " + temp[2] + " " + temp[3];
-        } else {
-          // temp [ 0 ~ 2 ] : Intel Core i7-10700K
-          userCpuName = temp[2];
-        }
-        return userCpuName.toLowerCase() >= info.toLowerCase();
-      } else if (idx2 === "drive" || idx2 === "ram") {
-        return (
-          Number(this.computerInformation[idx2].split(" ")[0]) >=
-          Number(info.split(" ")[0])
-        );
-      } else if (idx2 === "vga") {
+      console.log(key, game, com);
+      if (key === "cpu") {
+        com = com.includes("AMD")
+          ? com.split(" ").slice(0, 4).join(" ")
+          : com.split(" ")[0];
+        return com.toLowerCase() >= game.toLowerCase();
+      } else if (key === "drive" || key === "ram") {
+        return Number(com.split(" ")[0]) >= Number(game.split(" ")[0]);
+      } else if (key.includes("vga")) {
         // 문자열의 첫번째 단어 삭제 (Nvidia, AMD)
-        let vga = this.computerInformation[idx2].split(" ");
+        let vga = com.split(" ");
         vga = vga.slice(1, vga.length).join(" ");
 
-        return vga.toLowerCase() >= info.toLowerCase();
-      } else if (idx2 === "os") {
-        let temp = this.computerInformation[idx2].split("-");
-        return Number(temp[1]) >= Number(info.split(" ")[1]);
+        return vga.toLowerCase() >= game.toLowerCase();
+      } else if (key === "os") {
+        return Number(com.split("-")[1]) >= Number(game.split(" ")[1]);
       }
     },
 
     clickedShareButton() {
       window.Kakao.Share.sendDefault({
         objectType: "text",
-        text: `내 PC사양은\n CPU: ${this.computerInformation.cpu},\n Drive: ${this.computerInformation.drive_capacity}\n VGA: ${this.computerInformation.graphic_card}\n OS: ${this.computerInformation.os}\n Ram: ${this.computerInformation.ram} 입니다.`,
+        text: `내 PC사양은\n CPU: ${this.computerInformation.cpu},\n Drive: ${this.computerInformation.drive_capacity},\n EXTERNAL_VGA: ${this.computerInformation.external_vga},\n INTERNAL_VGA: ${this.computerInformation.internal_vga},\n OS: ${this.computerInformation.os},\n Ram: ${this.computerInformation.ram} 입니다.`,
         link: {
           mobileWebUrl: "https://developers.kakao.com",
           webUrl: "https://developers.kakao.com",
@@ -233,8 +298,22 @@ export default {
   height: 90%;
 }
 
-.table {
-  margin: 0;
+table {
+  border-color: black;
+}
+
+thead {
+  background-color: #000000c2;
+  color: white;
+}
+
+tbody {
+  overflow-y: scroll;
+  background-color: #f8f9fa;
+}
+
+td:not(:first-child),
+thead:not(:first-child) {
   text-align: center;
 }
 
