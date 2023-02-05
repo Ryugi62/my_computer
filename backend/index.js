@@ -77,7 +77,7 @@ app.use((req, res, next) => {
 
 app.post("/api/getProgram", (req, res) => {
   // how to send .zip file to client
-  res.download(__dirname + "/my_computer.exe", "my_computer.exe");
+  res.download(__dirname + "/my_computer.zip", "my_computer.zip");
 });
 
 app.post("/api/getHardware", (req, res) => {
