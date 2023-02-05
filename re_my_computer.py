@@ -6,6 +6,7 @@ import requests
 import webbrowser
 import tkinter as tk
 import wmi
+import subprocess
 
 
 from playsound import playsound
@@ -32,7 +33,7 @@ def main():
 
 # get cpu information
 def get_cpu_name():
-    return platform.processor()
+    return subprocess.check_output("wmic cpu get name", shell=True).decode("utf-8").split("\n")[1].strip()
 
 
 # get vga information
@@ -69,7 +70,7 @@ def get_drive_size():
 
 # get os information
 def get_os_name():
-    return platform.system()
+    return platform.platform()
 
 
 # get mainboard information
