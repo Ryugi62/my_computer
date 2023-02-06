@@ -31,8 +31,14 @@ export default {
 
 <style scoped>
 .downloadButton {
+  width: fit-content;
   color: #4472c4;
+  margin: 0 auto;
   cursor: pointer;
   text-align: center;
+}
+.downloadButton:hover {
+  text-decoration: underline;
+  background-color: #e5e5e5;
 }
 </style>
