@@ -1,5 +1,5 @@
 <template>
-  <div class="myHardwareBackground">
+  <div class="myHardwareBackground" @click="this.share = false">
     <ins
       class="kakao_ad_area advertisement"
       style="display: none"
@@ -32,9 +32,13 @@
 
     <div class="hardwareButtonBox">
       <div class="mb1">
-        <button class="btn btn-primary shareButton" @click="clickedShareButton">
+        <button
+          class="btn btn-primary shareButton"
+          @click.stop="this.share = !this.share"
+        >
           내 PC사양 공유하기
         </button>
+        <ShareBox :share="share" :computerInformation="computerInformation" />
       </div>
 
       <div class="mb1">
@@ -50,8 +54,9 @@
 </template>
 
 <script>
-import DownloadButton from "@/components/DownloadProgramButton.vue";
 import axios from "axios";
+import ShareBox from "@/components/ShareBox.vue";
+import DownloadButton from "@/components/DownloadProgramButton.vue";
 
 export default {
   name: "MyHardware",
@@ -77,10 +82,13 @@ export default {
         drive: "X",
         os: "X",
       },
+
+      share: true,
     };
   },
 
   components: {
+    ShareBox,
     DownloadButton,
   },
 
@@ -169,17 +177,6 @@ export default {
           console.log(err);
         });
     },
-
-    clickedShareButton() {
-      window.Kakao.Share.sendDefault({
-        objectType: "text",
-        text: `내 PC사양은\n CPU: ${this.computerInformation.cpu},\n Drive: ${this.computerInformation.drive_capacity}\n VGA: ${this.computerInformation.graphic_card}\n OS: ${this.computerInformation.os}\n Ram: ${this.computerInformation.ram} 입니다.`,
-        link: {
-          mobileWebUrl: "https://developers.kakao.com",
-          webUrl: "https://developers.kakao.com",
-        },
-      });
-    },
   },
 };
 </script>
@@ -234,5 +231,9 @@ td {
 
 .goGameListButton {
   border: 1px solid black;
+}
+
+.mb1 {
+  position: relative;
 }
 </style>
