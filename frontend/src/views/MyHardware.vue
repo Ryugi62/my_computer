@@ -83,7 +83,7 @@ export default {
         os: "X",
       },
 
-      share: true,
+      share: false,
     };
   },
 
