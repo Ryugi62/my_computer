@@ -1,5 +1,5 @@
 <template>
-  <div class="gameListBackground">
+  <div class="gameListBackground" @click="share = false">
     <div class="tableBox">
       <table class="table table-bordered table-hover">
         <thead>
@@ -34,26 +34,32 @@
       </table>
     </div>
     <div class="shareButtonBox">
-      <button class="btn btn-primary shareButton" @click="clickedShareButton">
+      <button
+        class="btn btn-primary shareButton"
+        @click.stop="this.share = !this.share"
+      >
         내 PC사양 공유하기
       </button>
+      <ShareBox :share="share" :computerInformation="computerInformation" />
     </div>
   </div>
 </template>
 
 <script>
 import axios from "axios";
+import ShareBox from "@/components/ShareBox.vue";
 
 export default {
   data() {
     return {
       computerInformation: {
         cpu: "X",
-        drive: "X",
+        mainboard: "X",
         external_vga: "X",
         internal_vga: "X",
-        os: "X",
         ram: "X",
+        drive: "X",
+        os: "X",
       },
 
       theadTitleArr: [
@@ -131,7 +137,13 @@ export default {
           ram: "16GB",
         },
       ],
+
+      share: false,
     };
+  },
+
+  components: {
+    ShareBox,
   },
 
   mounted() {
@@ -155,13 +167,6 @@ export default {
     setComputerData() {
       let cookieObj = this.getCookie();
       if (
-        // cpu: "X",
-        // drive: "X",
-        // external_vga: "X",
-        // internal_vga: "X",
-        // os: "X",
-        // ram: "X",
-
         cookieObj.cpu === "X" ||
         cookieObj.drive === "X" ||
         cookieObj.external_vga === "X" ||
@@ -177,14 +182,16 @@ export default {
     },
 
     setComputerInfo(data) {
-      const { cpu, drive, external_vga, internal_vga, os, ram } = data;
+      const { cpu, mainboard, external_vga, internal_vga, ram, drive, os } =
+        data;
 
       this.computerInformation.cpu = cpu;
-      this.computerInformation.drive = drive;
+      this.computerInformation.mainboard = mainboard;
       this.computerInformation.external_vga = external_vga;
       this.computerInformation.internal_vga = internal_vga;
-      this.computerInformation.os = os;
       this.computerInformation.ram = ram;
+      this.computerInformation.drive = drive;
+      this.computerInformation.os = os;
     },
 
     getMyIP() {
@@ -269,17 +276,6 @@ export default {
         return Number(com.split("-")[1]) >= Number(game.split(" ")[1]);
       }
     },
-
-    clickedShareButton() {
-      window.Kakao.Share.sendDefault({
-        objectType: "text",
-        text: `내 PC사양은\n CPU: ${this.computerInformation.cpu},\n Drive: ${this.computerInformation.drive_capacity},\n EXTERNAL_VGA: ${this.computerInformation.external_vga},\n INTERNAL_VGA: ${this.computerInformation.internal_vga},\n OS: ${this.computerInformation.os},\n Ram: ${this.computerInformation.ram} 입니다.`,
-        link: {
-          mobileWebUrl: "https://developers.kakao.com",
-          webUrl: "https://developers.kakao.com",
-        },
-      });
-    },
   },
 };
 </script>
@@ -326,13 +322,16 @@ thead:not(:first-child) {
 }
 
 .shareButtonBox {
-  width: 100%;
+  width: fit-content;
   height: 10%;
+  margin: auto;
   display: flex;
+  position: relative;
 }
 
 .shareButton {
   margin: auto;
-  background: #4472c4;
+  position: relative;
+  margin-top: 0;
 }
 </style>
