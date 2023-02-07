@@ -50,6 +50,7 @@ export default {
 
   methods: {
     clicked_share(type) {
+      const url = "http://내컴퓨터.com/myhardware";
       const coment = `내 PC사양은 :
   CPU: ${this.computerInformation.cpu},
   메인보드: ${this.computerInformation.mainboard},
@@ -57,7 +58,7 @@ export default {
   내장 GPU: ${this.computerInformation.internal_vga},
   RAM: ${this.computerInformation.ram},
   저장: ${this.computerInformation.drive},
-  OS: ${this.computerInformation.os} 입니다.\n`;
+  OS: ${this.computerInformation.os} 입니다.\n\n`;
 
       if (type === "kakao") {
         window.Kakao.Share.sendDefault({
@@ -71,20 +72,23 @@ export default {
       } else if (type === "twitter") {
         window.open(
           "https://twitter.com/share?url=" +
-            encodeURIComponent(window.location.href) +
+            encodeURIComponent(url) +
             "&text=" +
             encodeURIComponent(coment),
           "_blank"
         );
       } else if (type === "facebook") {
-        // shareUrl: `https://www.facebook.com/sharer/sharer.php?u=https://example.com&quote=This is some text to share`
-        window.open(
-          "https://www.facebook.com/sharer/sharer.php?u=" +
-            encodeURIComponent("https://내컴퓨터.com/myhardware") +
-            "&quote=" +
-            encodeURIComponent(coment),
-          "_blank"
-        );
+        // use facebook api to share
+        // window.FB.ui(
+        //   {
+        //     method: "share",
+        //     href: "https://your-url.com",
+        //     quote: "Your custom comment here",
+        //   },
+        //   function () {
+        //     // handle response here
+        //   }
+        // );
       }
     },
   },
