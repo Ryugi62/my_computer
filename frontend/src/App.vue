@@ -9,6 +9,7 @@ import MyComputerBody from "./page/MyComputerBody.vue";
 
 export default {
   name: "MyComputer",
+
   components: {
     MyComputerHeader,
     MyComputerBody,
