@@ -75,12 +75,10 @@ def get_os_name():
 
 # get mainboard information
 def get_mainboard_name():
-    chipset = None
-    manufacturer = None
-    w = wmi.WMI()
-    for motherboard in w.Win32_BaseBoard():
-        chipset = motherboard.Product
-        manufacturer = motherboard.Manufacturer
+    chipset = subprocess.check_output(
+        "wmic baseboard get manufacturer", shell=True).decode("utf-8").split("\n")[1].strip()
+    manufacturer = subprocess.check_output(
+        "wmic baseboard get product", shell=True).decode("utf-8").split("\n")[1].strip()
 
     return chipset, manufacturer
 
@@ -152,6 +150,17 @@ def open_alert():
 
     # background music
     playsound("sound.mp3")
+    # import pygame
+
+    # pygame.init()
+    # pygame.mixer.init()
+    # pygame.mixer.music.load("filename.mp3")
+    # pygame.mixer.music.play()
+
+    # while pygame.mixer.music.get_busy():
+    #     pygame.time.wait(1000)
+
+    # pygame.quit()
 
     messagebox.showinfo(
         "내컴퓨터.com", "사양 스캔이 완료되었습니다.\n다운받은 프로그램을 삭제하여도 추후 사양을 다시 확인할 수 있습니다.")
