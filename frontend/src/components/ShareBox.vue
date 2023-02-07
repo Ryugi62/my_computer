@@ -51,13 +51,13 @@ export default {
   methods: {
     clicked_share(type) {
       const coment = `내 PC사양은 :
-    CPU: ${this.computerInformation.cpu},
-    메인보드: ${this.computerInformation.mainboard},
-    외장 GPU: ${this.computerInformation.external_vga},
-    내장 GPU: ${this.computerInformation.internal_vga},
-    RAM: ${this.computerInformation.ram},
-    저장: ${this.computerInformation.drive},
-    OS: ${this.computerInformation.os} 입니다.\n`;
+  CPU: ${this.computerInformation.cpu},
+  메인보드: ${this.computerInformation.mainboard},
+  외장 GPU: ${this.computerInformation.external_vga},
+  내장 GPU: ${this.computerInformation.internal_vga},
+  RAM: ${this.computerInformation.ram},
+  저장: ${this.computerInformation.drive},
+  OS: ${this.computerInformation.os} 입니다.\n`;
 
       if (type === "kakao") {
         window.Kakao.Share.sendDefault({
