@@ -2,8 +2,21 @@
 <html lang="">
   <head>
     <meta charset="utf-8" />
-    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-    <meta name="viewport" content="width=device-width,initial-scale=1.0" />
+    <!-- set meat data -->
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content="https://내컴퓨터.com/" />
+    <meta property="og:title" content="내 컴퓨터 사양확인" />
+    <meta
+      property="og:description"
+      content="내 컴퓨터 사양을 쉽고 빠르게 확인하고 공유해보세요!"
+    />
+    <meta
+      property="og:image"
+      content="https://scontent-gmp1-1.xx.fbcdn.net/v/t39.30808-6/322233573_1361772437986399_1909177369151028009_n.jpg?_nc_cat=102&ccb=1-7&_nc_sid=09cbfe&_nc_ohc=zNtBoouNCaIAX-L2Hbr&tn=YZvmWAmVZmspKzje&_nc_ht=scontent-gmp1-1.xx&oh=00_AfCtGdyR6GMcfnyXUD9yRhZwiFY0ENiKDSAOmTnh_X2LNA&oe=63E77019"
+    />
+    <meta property="og:site_name" content="내컴퓨터" />
+    <meta property="og:locale" content="ko_KR" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
     <link
       rel="stylesheet"
       href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.1/css/all.min.css"
@@ -30,6 +43,25 @@
       crossorigin="anonymous"
     ></script>
     <script src="https://developers.kakao.com/sdk/js/kakao.js"></script>
+    <!-- <script>
+      window.fbAsyncInit = function () {
+        window.FB.init({
+          appId: "YOUR_APP_ID",
+          xfbml: true,
+          version: "v9.0",
+        });
+      };
+
+      (function (d, s, id) {
+        var js,
+          fjs = d.getElementsByTagName(s)[0];
+        if (d.getElementById(id)) return;
+        js = d.createElement(s);
+        js.id = id;
+        js.src = "https://connect.facebook.net/en_US/sdk.js";
+        fjs.parentNode.insertBefore(js, fjs);
+      })(document, "script", "facebook-jssdk");
+    </script> -->
     <script>
       window.Kakao.init("29049edd79977e2be35743748a2dcbb0");
     </script>
