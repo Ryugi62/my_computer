@@ -20,7 +20,6 @@ export default {
       this.$router.push("/notice");
     },
     goInquiry() {
-      // path =https://www.facebook.com/profile.php?id=100088261527037
       window.open("https://www.facebook.com/profile.php?id=100088261527037");
     },
   },
