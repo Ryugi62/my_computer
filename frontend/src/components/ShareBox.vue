@@ -78,17 +78,27 @@ export default {
           "_blank"
         );
       } else if (type === "facebook") {
-        // use facebook api to share
-        // window.FB.ui(
-        //   {
-        //     method: "share",
-        //     href: "https://your-url.com",
-        //     quote: "Your custom comment here",
-        //   },
-        //   function () {
-        //     // handle response here
-        //   }
-        // );
+        const postTitle = "My Awesome Post";
+        const postText = "This is the text of my awesome post.";
+        const facebookShareUrl = `https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(
+          url
+        )}&t=${encodeURIComponent(postTitle)}&description=${encodeURIComponent(
+          postText
+        )}`;
+
+        window.open(
+          facebookShareUrl,
+          "facebook-share-dialog",
+          "width=800,height=600"
+        );
+      } else {
+        const dummy = document.createElement("input");
+        document.body.appendChild(dummy);
+        dummy.value = url;
+        dummy.select();
+        document.execCommand("copy");
+        document.body.removeChild(dummy);
+        alert("URL이 복사되었습니다.");
       }
     },
   },
