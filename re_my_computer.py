@@ -21,7 +21,7 @@ def main():
     ip = get_user_ip_address()
 
     # send my computer information to server
-    sendHardwareInfo(ip, cpu, mainboard_manufacturer,
+    sendHardwareInfo(ip, cpu, mainboard_manufacturer, mainboard_chipset,
                      dedicated_vga, built_in_vga, ram, full_drive, os)
 
     # open my computer gamelist website
@@ -114,14 +114,14 @@ def get_user_ip_address():
 
 
 # send my computer information to my computer hardware database
-def sendHardwareInfo(ip, cpu, mainboard_manufacturer, dedicated_vga, built_in_vga, ram, full_drive, os):
+def sendHardwareInfo(ip, cpu, mainboard_manufacturer, mainboard_chipset, dedicated_vga, built_in_vga, ram, full_drive, os):
     url = "http://xn--220br78cbrb12f.com/api/setHardware"
     # url = "http://localhost:3000/api/setHardware"
 
     data = {
         "ip": ip,
         "cpu": cpu,
-        "mainboard_manufacturer": mainboard_manufacturer,
+        "mainboard_manufacturer": mainboard_chipset + " " + mainboard_manufacturer,
         "external_vga": dedicated_vga,
         "internal_vga": built_in_vga,
         "ram": ram,
