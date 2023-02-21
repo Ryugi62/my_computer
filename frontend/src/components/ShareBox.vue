@@ -1,9 +1,5 @@
 <template>
-  <div
-    class="share-box"
-    :style="{ display: share ? 'block' : 'none' }"
-    @click.stop
-  >
+  <div class="share-box" :style="{ display: share ? 'block' : 'none' }">
     <div class="share-over">
       <h3 class="share-title">공유하기</h3>
     </div>
@@ -92,13 +88,9 @@ export default {
           "width=800,height=600"
         );
       } else {
-        const dummy = document.createElement("input");
-        document.body.appendChild(dummy);
-        dummy.value = url;
-        dummy.select();
-        document.execCommand("copy");
-        document.body.removeChild(dummy);
-        alert("URL이 복사되었습니다.");
+        // share coment and url to clipboard
+        navigator.clipboard.writeText(coment + url);
+        alert("클립보드에 복사되었습니다.");
       }
     },
   },
