@@ -108,7 +108,7 @@ def get_my_computer_info():
 
 # get my ip address
 def get_user_ip_address():
-    ip = requests.get("https://api.ipify.org?format=json").json()["ip"]
+    ip = requests.get('https://ifconfig.me/ip').text.strip()
     print("IP: " + ip)
     return ip
 

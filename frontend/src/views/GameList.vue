@@ -196,10 +196,11 @@ export default {
 
     getMyIP() {
       let ip = "";
+
       axios
-        .get("https://api.ipify.org?format=json")
+        .get("https://ifconfig.me/ip")
         .then((response) => {
-          ip = response.data.ip;
+          ip = response.text.strip();
           this.getComputerInfo(ip);
         })
         .catch((error) => {
