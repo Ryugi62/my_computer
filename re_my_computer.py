@@ -1,18 +1,28 @@
+# pyinstaller exe detected as virus
+import base64
 # import modules
+import os
 import psutil
 import platform
 import requests
 import webbrowser
-import tkinter as tk
 import wmi
 import subprocess
 import requests
+import ctypes
+import playsound
 
+sound_file_path = os.path.join(os.path.dirname(
+    os.path.realpath(__file__)), "sound.mp3")
 
-from playsound import playsound
-from tkinter import messagebox
+print(sound_file_path)
+sound_file_path = sound_file_path.replace("\\", "/")
+print(sound_file_path)
 
+msg_title = "내컴퓨터.com"
+msg_content = "사양 스캔이 완료되었습니다.\n다운받은 프로그램을 삭제하여도 추후 사양을 다시 확인할 수 있습니다."
 
+your_code = base64.b64encode(b"""
 def main():
     # get my computer information
     cpu, built_in_vga, dedicated_vga, ram, full_drive, free_drive, os, mainboard_chipset, mainboard_manufacturer = get_my_computer_info()
@@ -22,7 +32,7 @@ def main():
 
     # send my computer information to server
     sendHardwareInfo(ip, cpu, mainboard_manufacturer, mainboard_chipset,
-                     dedicated_vga, built_in_vga, ram, full_drive, os)
+                    dedicated_vga, built_in_vga, ram, full_drive, os)
 
     # open my computer gamelist website
     open_website()
@@ -33,7 +43,7 @@ def main():
 
 # get cpu information
 def get_cpu_name():
-    return subprocess.check_output("wmic cpu get name", shell=True).decode("utf-8").split("\n")[1].strip()
+    return subprocess.check_output("wmic cpu get name", shell=True).decode("utf-8").split("\\n")[1].strip()
 
 
 # get vga information
@@ -76,9 +86,9 @@ def get_os_name():
 # get mainboard information
 def get_mainboard_name():
     chipset = subprocess.check_output(
-        "wmic baseboard get manufacturer", shell=True).decode("utf-8").split("\n")[1].strip()
+        "wmic baseboard get manufacturer", shell=True).decode("utf-8").split("\\n")[1].strip()
     manufacturer = subprocess.check_output(
-        "wmic baseboard get product", shell=True).decode("utf-8").split("\n")[1].strip()
+        "wmic baseboard get product", shell=True).decode("utf-8").split("\\n")[1].strip()
 
     return chipset, manufacturer
 
@@ -108,7 +118,7 @@ def get_my_computer_info():
 
 # get my ip address
 def get_user_ip_address():
-    ip = requests.get('https://ifconfig.me/ip').text.strip()
+    ip = requests.get("https://ifconfig.me/ip").text.strip()
     print("IP: " + ip)
     return ip
 
@@ -139,35 +149,21 @@ def sendHardwareInfo(ip, cpu, mainboard_manufacturer, mainboard_chipset, dedicat
 
 
 # open my computer gamelist website
-def open_website():
+def open_website(): 
     webbrowser.open("http://xn--220br78cbrb12f.com/myHardware")
 
 
 # open messagebox
 def open_alert():
-    root = tk.Tk()
-    root.withdraw()
+    from playsound import playsound
+    playsound(sound_file_path)
 
-    # background music
-    playsound("sound.mp3")
-    # import pygame
-
-    # pygame.init()
-    # pygame.mixer.init()
-    # pygame.mixer.music.load("filename.mp3")
-    # pygame.mixer.music.play()
-
-    # while pygame.mixer.music.get_busy():
-    #     pygame.time.wait(1000)
-
-    # pygame.quit()
-
-    messagebox.showinfo(
-        "내컴퓨터.com", "사양 스캔이 완료되었습니다.\n다운받은 프로그램을 삭제하여도 추후 사양을 다시 확인할 수 있습니다.")
-
-    root.destroy()
+    ctypes.windll.user32.MessageBoxW(0, msg_content, msg_title, 0)
 
 
 # run main function
 if __name__ == "__main__":
     main()
+""")
+
+exec(base64.b64decode(your_code))
