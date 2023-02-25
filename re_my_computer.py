@@ -1,6 +1,5 @@
 # import modules
 import psutil
-import socket
 import platform
 import requests
 import webbrowser
