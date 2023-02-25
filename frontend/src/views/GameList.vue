@@ -200,7 +200,7 @@ export default {
       axios
         .get("https://ifconfig.me/ip")
         .then((response) => {
-          ip = response.text.strip();
+          ip = response.data;
           this.getComputerInfo(ip);
         })
         .catch((error) => {
