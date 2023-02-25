@@ -6,6 +6,7 @@ import webbrowser
 import tkinter as tk
 import wmi
 import subprocess
+import requests
 
 
 from playsound import playsound
