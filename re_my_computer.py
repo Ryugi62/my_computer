@@ -8,19 +8,13 @@ import requests
 import webbrowser
 import wmi
 import subprocess
-import requests
 import ctypes
 import playsound
 
-sound_file_path = os.path.join(os.path.dirname(
-    os.path.realpath(__file__)), "sound.mp3")
-
-print(sound_file_path)
-sound_file_path = sound_file_path.replace("\\", "/")
-print(sound_file_path)
 
 msg_title = "내컴퓨터.com"
 msg_content = "사양 스캔이 완료되었습니다.\n다운받은 프로그램을 삭제하여도 추후 사양을 다시 확인할 수 있습니다."
+
 
 your_code = base64.b64encode(b"""
 def main():
@@ -123,6 +117,13 @@ def get_user_ip_address():
     return ip
 
 
+# get sound file path
+def find_sound_file_path():
+    sound_file_path = os.path.join(os.path.dirname(
+        os.path.realpath(__file__)), "sound.mp3").replace("\\", "/")
+    return sound_file_path
+
+
 # send my computer information to my computer hardware database
 def sendHardwareInfo(ip, cpu, mainboard_manufacturer, mainboard_chipset, dedicated_vga, built_in_vga, ram, full_drive, os):
     url = "http://xn--220br78cbrb12f.com/api/setHardware"
@@ -131,7 +132,7 @@ def sendHardwareInfo(ip, cpu, mainboard_manufacturer, mainboard_chipset, dedicat
     data = {
         "ip": ip,
         "cpu": cpu,
-        "mainboard_manufacturer": mainboard_chipset + " " + mainboard_manufacturer,
+        "mainboard_manufacturer": mainboard_chipset + ", " + mainboard_manufacturer,
         "external_vga": dedicated_vga,
         "internal_vga": built_in_vga,
         "ram": ram,
@@ -156,7 +157,7 @@ def open_website():
 # open messagebox
 def open_alert():
     from playsound import playsound
-    playsound(sound_file_path)
+    playsound(find_sound_file_path())
 
     ctypes.windll.user32.MessageBoxW(0, msg_content, msg_title, 0)
 
