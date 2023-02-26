@@ -89,7 +89,14 @@ export default {
         );
       } else {
         // share coment and url to clipboard
-        navigator.clipboard.writeText(coment + url);
+        // navigator.clipboard.writeText(coment + url); do not use this
+        const el = document.createElement("textarea");
+        el.value = coment + url;
+        document.body.appendChild(el);
+        el.select();
+        document.execCommand("copy");
+        document.body.removeChild(el);
+
         alert("클립보드에 복사되었습니다.");
       }
     },
