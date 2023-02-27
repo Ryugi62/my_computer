@@ -57,6 +57,18 @@ connection.query(
   }
 );
 
+app.all("*", (req, res, next) => {
+  console.log("req.secure == " + req.secure);
+  var protocol = req.headers["x-forwarded-proto"] || req.protocol;
+  if (protocol == "https") {
+    next();
+  } else {
+    var domain = req.hostname;
+    console.log("domain == " + domain);
+    res.redirect("https://" + domain + req.url);
+  }
+});
+
 app.use(cors());
 app.use(history());
 app.use(express.static("dist"));
@@ -269,5 +281,18 @@ app.post("/api/getGameList", (req, res) => {
   });
 });
 
-// start server
-app.listen(port, () => console.log(`내컴퓨터.com listening on port ${port}!`));
+// // start http server
+// app.listen(port, () => console.log(`내컴퓨터.com listening on port ${port}!`));
+
+// start https server
+const https = require("https");
+const fs = require("fs");
+
+const options = {
+  key: fs.readFileSync("./key.pem"),
+  cert: fs.readFileSync("./cert.pem"),
+};
+
+https.createServer(options, app).listen(port, () => {
+  console.log(`내컴퓨터.com listening on port ${port}!`);
+});
